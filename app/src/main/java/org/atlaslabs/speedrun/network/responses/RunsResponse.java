@@ -1,4 +1,4 @@
-package org.atlaslabs.speedrun.network;
+package org.atlaslabs.speedrun.network.responses;
 
 import org.atlaslabs.speedrun.models.Run;
 

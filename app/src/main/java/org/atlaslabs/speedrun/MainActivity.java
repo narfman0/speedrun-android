@@ -7,7 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import org.atlaslabs.speedrun.network.RestUtil;
-import org.atlaslabs.speedrun.network.RunsResponse;
+import org.atlaslabs.speedrun.network.responses.RunsResponse;
 import org.atlaslabs.speedrun.runs.RecentRunsListAdapter;
 
 import java.io.IOException;

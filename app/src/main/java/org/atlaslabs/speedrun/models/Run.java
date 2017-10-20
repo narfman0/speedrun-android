@@ -1,7 +1,11 @@
 package org.atlaslabs.speedrun.models;
 
 public class Run {
-    String user, game, category, platform, time;
+    String id, user, game, category, platform, time;
+
+    public String getID(){
+        return id;
+    }
 
     public String getUser(){
         return user;
