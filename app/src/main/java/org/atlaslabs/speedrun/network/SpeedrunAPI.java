@@ -15,5 +15,5 @@ public interface SpeedrunAPI {
 
     @GET("games?_bulk=yes&max=1000")
     Observable<GamesResponse> getGamesBulk(
-            @Query("offset") String offset);
+            @Query("offset") int offset);
 }

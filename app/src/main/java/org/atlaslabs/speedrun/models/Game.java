@@ -1,6 +1,10 @@
 package org.atlaslabs.speedrun.models;
 
-public class Game {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class Game extends RealmObject{
+    @PrimaryKey
     private String id;
     private String abbreviation;
     private String weblink;
@@ -25,13 +29,5 @@ public class Game {
 
     public Assets getAssets() {
         return assets;
-    }
-
-    class Asset {
-        String uri;
-    }
-
-    class Assets {
-        Asset logo, background, foreground;
     }
 }

@@ -1,7 +1,12 @@
 package org.atlaslabs.speedrun.models;
 
-public class Run {
-    private String id, user, game, category;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class Run extends RealmObject{
+    @PrimaryKey
+    private String id;
+    private String user, game, category;
     private Times times;
     private System system;
 

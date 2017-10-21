@@ -1,6 +1,8 @@
 package org.atlaslabs.speedrun.models;
 
-public class Times {
+import io.realm.RealmObject;
+
+public class Times extends RealmObject{
     private String primary_t;
     private String realtime_t;
     private String ingame_t;
