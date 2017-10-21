@@ -30,8 +30,8 @@ public class RecentRunsListAdapter extends RecyclerView.Adapter<RunViewHolder>{
         holder.user.setText(run.getUser());
         holder.game.setText(run.getGame());
         holder.category.setText(run.getCategory());
-        holder.platform.setText(run.getPlatform());
-        holder.time.setText(run.getTime());
+        holder.platform.setText(run.getSystem().getPlatform());
+        holder.time.setText(run.getTimes().getPrimaryTime());
     }
 
     @Override

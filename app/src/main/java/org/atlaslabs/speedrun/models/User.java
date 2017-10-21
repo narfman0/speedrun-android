@@ -1,11 +1,11 @@
 package org.atlaslabs.speedrun.models;
 
 public class User {
-    String id;
-    String weblink;
-    String twitch;
-    String youtube;
-    Names names;
+    private String id;
+    private String weblink;
+    private String twitch;
+    private String youtube;
+    private Names names;
 
     public Names getNames() {
         return names;
