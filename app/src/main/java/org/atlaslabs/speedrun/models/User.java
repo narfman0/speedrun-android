@@ -1,5 +1,6 @@
 package org.atlaslabs.speedrun.models;
 
+import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -29,5 +30,9 @@ public class User extends RealmObject{
 
     public String getYoutube() {
         return youtube;
+    }
+
+    public static User getByID(String id, Realm realm){
+        return realm.where(User.class).equalTo("id", id).findFirst();
     }
 }

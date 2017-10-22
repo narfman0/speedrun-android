@@ -2,9 +2,11 @@ package org.atlaslabs.speedrun.network;
 
 import org.atlaslabs.speedrun.network.responses.GamesResponse;
 import org.atlaslabs.speedrun.network.responses.RunsResponse;
+import org.atlaslabs.speedrun.network.responses.UserResponse;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface SpeedrunAPI {
@@ -16,4 +18,8 @@ public interface SpeedrunAPI {
     @GET("games?_bulk=yes&max=1000")
     Observable<GamesResponse> getGamesBulk(
             @Query("offset") int offset);
+
+    @GET("users/{id}")
+    Observable<UserResponse> getUser(
+            @Path("id") String id);
 }

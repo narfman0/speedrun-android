@@ -6,9 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.atlaslabs.speedrun.R;
+import org.atlaslabs.speedrun.models.Game;
 import org.atlaslabs.speedrun.models.Run;
+import org.atlaslabs.speedrun.models.User;
 
 import java.util.List;
+
+import io.realm.Realm;
 
 public class RecentRunsListAdapter extends RecyclerView.Adapter<RunViewHolder>{
     private List<Run> runs;
@@ -27,8 +31,15 @@ public class RecentRunsListAdapter extends RecyclerView.Adapter<RunViewHolder>{
     @Override
     public void onBindViewHolder(RunViewHolder holder, int position) {
         Run run = runs.get(position);
-        holder.user.setText(run.getUser());
-        holder.game.setText(run.getGame());
+        Realm realm = Realm.getDefaultInstance();
+        try {
+            Game game = Game.getByID(run.getGame(), realm);
+            User user = User.getByID(run.getUser(), realm);
+            holder.game.setText(game == null ? run.getGame() : game.getNames().getInternational());
+            holder.user.setText(user == null ? run.getUser() : user.getNames().getInternational());
+        } finally {
+            realm.close();
+        }
         holder.category.setText(run.getCategory());
         holder.platform.setText(run.getSystem().getPlatform());
         holder.time.setText(run.getTimes().getPrimaryTime());
