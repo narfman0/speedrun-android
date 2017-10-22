@@ -33,10 +33,12 @@ public class RecentRunsListAdapter extends RecyclerView.Adapter<RunViewHolder>{
         Run run = runs.get(position);
         Realm realm = Realm.getDefaultInstance();
         try {
-            Game game = Game.getByID(run.getGame(), realm);
-            User user = User.getByID(run.getUser(), realm);
+            Game game = Game.getByID(realm, run.getGame());
             holder.game.setText(game == null ? run.getGame() : game.getNames().getInternational());
-            holder.user.setText(user == null ? run.getUser() : user.getNames().getInternational());
+            for(User player : run.getPlayers()) {
+                User user = User.getByID(realm, player.getId());
+                holder.user.setText(user == null ? player.getId() : user.getNames().getInternational());
+            }
         } finally {
             realm.close();
         }

@@ -6,22 +6,22 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
-public class GamesLoadReceiver extends BroadcastReceiver{
+public class RecentRunReceiver extends BroadcastReceiver{
     private Context context;
-    private IGamesLoadedHandler handler;
+    private IRecentRunsLoadedHandler handler;
 
-    public GamesLoadReceiver(Context context, IGamesLoadedHandler handler){
+    public RecentRunReceiver(Context context, IRecentRunsLoadedHandler handler){
         this.context = context;
         this.handler = handler;
         IntentFilter gamesLoadIntentFilter = new IntentFilter(
-                GamesLoadService.INTENT_GAMES_LOAD_COMPLETE);
+                RecentRunService.INTENT_RECENT_RUNS_COMPLETE);
         LocalBroadcastManager.getInstance(context).registerReceiver(
                 this, gamesLoadIntentFilter);
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        handler.gamesLoaded();
+        handler.recentRunsLoaded();
     }
 
     public void clean(){
@@ -30,7 +30,7 @@ public class GamesLoadReceiver extends BroadcastReceiver{
         handler = null;
     }
 
-    public interface IGamesLoadedHandler{
-        void gamesLoaded();
+    public interface IRecentRunsLoadedHandler{
+        void recentRunsLoaded();
     }
 }

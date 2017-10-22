@@ -26,7 +26,6 @@ public class GamesLoadService extends IntentService{
 
     @Override
     protected void onHandleIntent(Intent workIntent) {
-        Realm.init(this);
         Realm realm = Realm.getDefaultInstance();
         try {
             long totalGames = realm.where(Game.class).count();

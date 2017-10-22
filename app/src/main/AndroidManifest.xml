@@ -20,6 +20,9 @@
         <service
             android:name=".services.GamesLoadService"
             android:exported="false"/>
+        <service
+            android:name=".services.RecentRunService"
+            android:exported="false"/>
     </application>
 
 </manifest>

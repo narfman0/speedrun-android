@@ -32,7 +32,7 @@ public class Game extends RealmObject{
         return assets;
     }
 
-    public static Game getByID(String id, Realm realm){
+    public static Game getByID(Realm realm, String id){
         return realm.where(Game.class).equalTo("id", id).findFirst();
     }
 }

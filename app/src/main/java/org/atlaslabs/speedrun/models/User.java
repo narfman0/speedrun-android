@@ -7,9 +7,10 @@ import io.realm.annotations.PrimaryKey;
 public class User extends RealmObject{
     @PrimaryKey
     private String id;
+    private String rel, role;
+    private Link twitch;
+    private Link youtube;
     private String weblink;
-    private String twitch;
-    private String youtube;
     private Names names;
 
     public Names getNames() {
@@ -24,15 +25,19 @@ public class User extends RealmObject{
         return weblink;
     }
 
-    public String getTwitch() {
+    public Link getTwitch() {
         return twitch;
     }
 
-    public String getYoutube() {
+    public Link getYoutube() {
         return youtube;
     }
 
-    public static User getByID(String id, Realm realm){
+    public String getRel() {
+        return rel;
+    }
+
+    public static User getByID(Realm realm, String id){
         return realm.where(User.class).equalTo("id", id).findFirst();
     }
 }
