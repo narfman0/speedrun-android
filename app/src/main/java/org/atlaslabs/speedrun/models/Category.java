@@ -1,10 +1,8 @@
 package org.atlaslabs.speedrun.models;
 
-import android.support.annotation.Nullable;
-
-import org.atlaslabs.speedrun.network.IFetchComplete;
 import org.atlaslabs.speedrun.network.RestUtil;
 
+import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 import io.realm.RealmObject;
@@ -42,20 +40,17 @@ public class Category extends RealmObject{
         return realm.where(Category.class).equalTo("id", id).findFirst();
     }
 
-    public static Category getOrFetch(Realm realm, String id,
-                                      @Nullable IFetchComplete<Category> completeHandler){
+    public static Single<Category> getOrFetch(Realm realm, String id){
         Category category = get(realm, id);
         if(category == null)
-            fetch(id, completeHandler);
-        else
-            completeHandler.fetchComplete(category);
-        return category;
+            return fetch(id);
+        return Single.just(category);
     }
 
-    public static void fetch(String id, @Nullable IFetchComplete<Category> completeHandler){
-        RestUtil.createAPI().getCategory(id)
+    public static Single<Category> fetch(String id){
+        return RestUtil.createAPI().getCategory(id)
                 .subscribeOn(Schedulers.newThread())
-                .subscribe((item) -> {
+                .flatMap((item) -> {
                     Realm realm = Realm.getDefaultInstance();
                     try {
                         realm.beginTransaction();
@@ -64,7 +59,7 @@ public class Category extends RealmObject{
                     }finally{
                         realm.close();
                     }
-                    completeHandler.fetchComplete(item.getCategory());
+                    return Single.just(item.getCategory());
                 });
     }
 }

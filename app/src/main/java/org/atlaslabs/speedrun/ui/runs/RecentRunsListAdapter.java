@@ -15,6 +15,7 @@ import org.atlaslabs.speedrun.util.Utils;
 
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.Realm;
 
 public class RecentRunsListAdapter extends RecyclerView.Adapter<RunViewHolder>{
@@ -36,28 +37,20 @@ public class RecentRunsListAdapter extends RecyclerView.Adapter<RunViewHolder>{
         Run run = runs.get(position);
         Realm realm = Realm.getDefaultInstance();
         try {
-            Game.getOrFetch(realm, run.getGame(), (game) ->
-                    Utils.runOnUIThread(() ->
-                            holder.game.setText(game.getNames().getInternational())
-                    )
-            );
+            Game.getOrFetch(realm, run.getGame())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe((game) -> holder.game.setText(game.getNames().getInternational()));
             for(User player : run.getPlayers()) {
-                User.getOrFetch(realm, player.getId(), (user) ->
-                        Utils.runOnUIThread(() ->
-                                holder.user.setText(user.getNames().getInternational())
-                        )
-                );
+                User.getOrFetch(realm, player.getId())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe((user) -> holder.user.setText(user.getNames().getInternational()));
             }
-            Platform.getOrFetch(realm, run.getSystem().getPlatform(), (platform) ->
-                    Utils.runOnUIThread(() ->
-                            holder.platform.setText(platform.getName())
-                    )
-            );
-            Category.getOrFetch(realm, run.getCategory(), (category) ->
-                    Utils.runOnUIThread(() ->
-                            holder.category.setText(category.getName())
-                    )
-            );
+            Platform.getOrFetch(realm, run.getSystem().getPlatform())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe( (platform) -> holder.platform.setText(platform.getName()));
+            Category.getOrFetch(realm, run.getCategory())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe((category) -> holder.category.setText(category.getName()));
         } finally {
             realm.close();
         }

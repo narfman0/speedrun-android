@@ -1,10 +1,8 @@
 package org.atlaslabs.speedrun.models;
 
-import android.support.annotation.Nullable;
-
-import org.atlaslabs.speedrun.network.IFetchComplete;
 import org.atlaslabs.speedrun.network.RestUtil;
 
+import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 import io.realm.RealmObject;
@@ -47,20 +45,17 @@ public class User extends RealmObject{
         return realm.where(User.class).equalTo("id", id).findFirst();
     }
 
-    public static User getOrFetch(Realm realm, String id,
-                                  @Nullable IFetchComplete<User> completeHandler){
+    public static Single<User> getOrFetch(Realm realm, String id){
         User user = get(realm, id);
         if(user == null)
-            fetch(id, completeHandler);
-        else
-            completeHandler.fetchComplete(user);
-        return user;
+            return fetch(id);
+        return Single.just(user);
     }
 
-    public static void fetch(String id, @Nullable IFetchComplete<User> completeHandler){
-        RestUtil.createAPI().getUser(id)
+    public static Single<User> fetch(String id){
+        return RestUtil.createAPI().getUser(id)
                 .subscribeOn(Schedulers.newThread())
-                .subscribe((item) -> {
+                .flatMap((item) -> {
                     Realm realm = Realm.getDefaultInstance();
                     try {
                         realm.beginTransaction();
@@ -69,7 +64,7 @@ public class User extends RealmObject{
                     }finally{
                         realm.close();
                     }
-                    completeHandler.fetchComplete(item.getUser());
+                    return Single.just(item.getUser());
                 });
     }
 }
