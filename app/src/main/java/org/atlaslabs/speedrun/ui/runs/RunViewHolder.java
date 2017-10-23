@@ -1,4 +1,4 @@
-package org.atlaslabs.speedrun.runs;
+package org.atlaslabs.speedrun.ui.runs;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

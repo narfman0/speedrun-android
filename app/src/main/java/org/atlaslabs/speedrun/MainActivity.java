@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import org.atlaslabs.speedrun.models.Run;
-import org.atlaslabs.speedrun.runs.RecentRunsListAdapter;
+import org.atlaslabs.speedrun.ui.runs.RecentRunsListAdapter;
 import org.atlaslabs.speedrun.services.GamesLoadReceiver;
 import org.atlaslabs.speedrun.services.GamesLoadService;
 import org.atlaslabs.speedrun.services.PlatformsReceiver;

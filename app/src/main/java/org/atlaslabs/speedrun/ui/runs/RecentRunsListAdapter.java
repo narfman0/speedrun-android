@@ -1,4 +1,4 @@
-package org.atlaslabs.speedrun.runs;
+package org.atlaslabs.speedrun.ui.runs;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,10 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.atlaslabs.speedrun.R;
+import org.atlaslabs.speedrun.models.Category;
 import org.atlaslabs.speedrun.models.Game;
 import org.atlaslabs.speedrun.models.Platform;
 import org.atlaslabs.speedrun.models.Run;
 import org.atlaslabs.speedrun.models.User;
+import org.atlaslabs.speedrun.util.Utils;
 
 import java.util.List;
 
@@ -34,18 +36,31 @@ public class RecentRunsListAdapter extends RecyclerView.Adapter<RunViewHolder>{
         Run run = runs.get(position);
         Realm realm = Realm.getDefaultInstance();
         try {
-            Game game = Game.getByID(realm, run.getGame());
-            holder.game.setText(game == null ? run.getGame() : game.getNames().getInternational());
+            Game.getOrFetch(realm, run.getGame(), (game) ->
+                    Utils.runOnUIThread(() ->
+                            holder.game.setText(game.getNames().getInternational())
+                    )
+            );
             for(User player : run.getPlayers()) {
-                User user = User.getByID(realm, player.getId());
-                holder.user.setText(user == null ? player.getId() : user.getNames().getInternational());
+                User.getOrFetch(realm, player.getId(), (user) ->
+                        Utils.runOnUIThread(() ->
+                                holder.user.setText(user.getNames().getInternational())
+                        )
+                );
             }
-            Platform platform = Platform.getByID(realm, run.getSystem().getPlatform());
-            holder.platform.setText(platform == null ? run.getSystem().getPlatform() : platform.getName());
+            Platform.getOrFetch(realm, run.getSystem().getPlatform(), (platform) ->
+                    Utils.runOnUIThread(() ->
+                            holder.platform.setText(platform.getName())
+                    )
+            );
+            Category.getOrFetch(realm, run.getCategory(), (category) ->
+                    Utils.runOnUIThread(() ->
+                            holder.category.setText(category.getName())
+                    )
+            );
         } finally {
             realm.close();
         }
-        holder.category.setText(run.getCategory());
         holder.time.setText(run.getTimes().getPrimaryTime());
     }
 

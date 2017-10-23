@@ -1,7 +1,9 @@
 package org.atlaslabs.speedrun.network;
 
 import org.atlaslabs.speedrun.network.responses.CategoryResponse;
+import org.atlaslabs.speedrun.network.responses.GameResponse;
 import org.atlaslabs.speedrun.network.responses.GamesResponse;
+import org.atlaslabs.speedrun.network.responses.PlatformResponse;
 import org.atlaslabs.speedrun.network.responses.PlatformsResponse;
 import org.atlaslabs.speedrun.network.responses.RunsResponse;
 import org.atlaslabs.speedrun.network.responses.UserResponse;
@@ -18,12 +20,20 @@ public interface SpeedrunAPI {
     Observable<CategoryResponse> getCategory(
             @Path("id") String id);
 
+    @GET("games/{id}")
+    Observable<GameResponse> getGame(
+            @Path("id") String id);
+
     @GET("games?_bulk=yes&max=1000")
     Observable<GamesResponse> getGamesBulk(
             @Query("offset") int offset);
 
     @GET("platforms?_bulk=yes&max=1000")
     Observable<PlatformsResponse> getPlatformsBulk();
+
+    @GET("platforms/{id}")
+    Observable<PlatformResponse> getPlatform(
+            @Path("id") String id);
 
     @GET("runs?status=verified&orderby=verify-date&direction=desc")
     Observable<RunsResponse> getRunsRecent();
