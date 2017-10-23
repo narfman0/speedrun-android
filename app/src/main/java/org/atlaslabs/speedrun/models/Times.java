@@ -3,19 +3,19 @@ package org.atlaslabs.speedrun.models;
 import io.realm.RealmObject;
 
 public class Times extends RealmObject{
-    private String primary_t;
-    private String realtime_t;
-    private String ingame_t;
+    private float primary_t;
+    private float realtime_t;
+    private float ingame_t;
 
-    public String getIngameTime() {
+    public float getIngameTime() {
         return ingame_t;
     }
 
-    public String getPrimaryTime() {
+    public float getPrimaryTime() {
         return primary_t;
     }
 
-    public String getRealTime() {
+    public float getRealTime() {
         return realtime_t;
     }
 }

@@ -61,7 +61,7 @@ public class RecentRunsListAdapter extends RecyclerView.Adapter<RunViewHolder>{
         } finally {
             realm.close();
         }
-        holder.time.setText(run.getTimes().getPrimaryTime());
+        holder.time.setText(Utils.timePretty(run.getTimes().getPrimaryTime()));
     }
 
     @Override
