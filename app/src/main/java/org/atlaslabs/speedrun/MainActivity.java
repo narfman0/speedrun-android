@@ -9,13 +9,14 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import org.atlaslabs.speedrun.models.Run;
-import org.atlaslabs.speedrun.ui.runs.RecentRunsListAdapter;
 import org.atlaslabs.speedrun.services.GamesLoadReceiver;
 import org.atlaslabs.speedrun.services.GamesLoadService;
 import org.atlaslabs.speedrun.services.PlatformsReceiver;
 import org.atlaslabs.speedrun.services.PlatformsService;
 import org.atlaslabs.speedrun.services.RecentRunReceiver;
 import org.atlaslabs.speedrun.services.RecentRunService;
+import org.atlaslabs.speedrun.ui.runs.RecentRunsListAdapter;
+import org.atlaslabs.speedrun.ui.decorations.VerticalSpaceItemDecoration;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements GamesLoadReceiver
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         recentRunsList = (RecyclerView)findViewById(R.id.recentRunsList);
         recentRunsList.setLayoutManager(new LinearLayoutManager(this));
+        recentRunsList.addItemDecoration(new VerticalSpaceItemDecoration(
+                (int)getResources().getDimension(R.dimen.run_list_divider_height)));
 
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder()
@@ -82,6 +85,8 @@ public class MainActivity extends AppCompatActivity implements GamesLoadReceiver
             gamesLoadReceiver.clean();
         if(recentRunReceiver != null)
             recentRunReceiver.clean();
+        if(platformsReceiver != null)
+            platformsReceiver.clean();
         if(realm != null)
             realm.close();
     }
