@@ -9,7 +9,6 @@ import org.atlaslabs.speedrun.network.RestUtil;
 
 import java.util.Arrays;
 
-import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 
 public class PlatformsService extends IntentService {
@@ -21,33 +20,21 @@ public class PlatformsService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent workIntent) {
-        long totalPlatforms = 0;
         Realm realm = Realm.getDefaultInstance();
         try {
-            totalPlatforms = realm.where(Platform.class).count();
+            long totalPlatforms = realm.where(Platform.class).count();
+            if(totalPlatforms == 0)
+                RestUtil.createAPI().getPlatformsBulk().subscribe((item) -> {
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(Arrays.asList(item.getPlatforms()));
+                    realm.commitTransaction();
+                });
         } finally {
             realm.close();
         }
-        if(totalPlatforms == 0)
-            populate();
-    }
 
-    private void populate(){
-        RestUtil.createAPI().getPlatformsBulk()
-                .subscribeOn(Schedulers.newThread())
-                .subscribe((item) -> {
-                    Realm realm = Realm.getDefaultInstance();
-                    try {
-                        realm.beginTransaction();
-                        realm.copyToRealmOrUpdate(Arrays.asList(item.getPlatforms()));
-                        realm.commitTransaction();
-                    } finally {
-                        realm.close();
-                    }
-
-                    // Broadcast that we are done populating game data
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(
-                            new Intent(INTENT_PLATFORMS_COMPLETE));
-                });
+        // Broadcast that we are done populating game data
+        LocalBroadcastManager.getInstance(this).sendBroadcast(
+                new Intent(INTENT_PLATFORMS_COMPLETE));
     }
 }
