@@ -18,7 +18,7 @@ import io.realm.Realm;
  * Download all games from speedrun.com and add to the database
  */
 public class GamesLoadService extends IntentService{
-    public static String INTENT_GAMES_LOAD_COMPLETE = "INTENT_GAMES_LOAD_COMPLETE";
+    static String INTENT_GAMES_LOAD_COMPLETE = "INTENT_GAMES_LOAD_COMPLETE";
 
     public GamesLoadService(){
         super(GamesLoadService.class.getSimpleName());

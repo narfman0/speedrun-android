@@ -6,21 +6,22 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
-public class GamesLoadReceiver extends BroadcastReceiver{
-    private Context context;
-    private IGamesLoadedHandler handler;
+import static org.atlaslabs.speedrun.services.PlatformsService.INTENT_PLATFORMS_COMPLETE;
 
-    public GamesLoadReceiver(Context context, IGamesLoadedHandler handler){
+public class PlatformsReceiver extends BroadcastReceiver{
+    private Context context;
+    private IPlatformsHandler handler;
+
+    public PlatformsReceiver(Context context, IPlatformsHandler handler){
         this.context = context;
         this.handler = handler;
         LocalBroadcastManager.getInstance(context).registerReceiver(
-                this, new IntentFilter(
-                        GamesLoadService.INTENT_GAMES_LOAD_COMPLETE));
+                this, new IntentFilter(INTENT_PLATFORMS_COMPLETE));
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        handler.gamesLoaded();
+        handler.platformsLoaded();
     }
 
     public void clean(){
@@ -29,7 +30,7 @@ public class GamesLoadReceiver extends BroadcastReceiver{
         handler = null;
     }
 
-    public interface IGamesLoadedHandler{
-        void gamesLoaded();
+    public interface IPlatformsHandler{
+        void platformsLoaded();
     }
 }

@@ -12,6 +12,8 @@ import org.atlaslabs.speedrun.models.Run;
 import org.atlaslabs.speedrun.runs.RecentRunsListAdapter;
 import org.atlaslabs.speedrun.services.GamesLoadReceiver;
 import org.atlaslabs.speedrun.services.GamesLoadService;
+import org.atlaslabs.speedrun.services.PlatformsReceiver;
+import org.atlaslabs.speedrun.services.PlatformsService;
 import org.atlaslabs.speedrun.services.RecentRunReceiver;
 import org.atlaslabs.speedrun.services.RecentRunService;
 
@@ -19,12 +21,13 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
 public class MainActivity extends AppCompatActivity implements GamesLoadReceiver.IGamesLoadedHandler,
-    RecentRunReceiver.IRecentRunsLoadedHandler{
+    RecentRunReceiver.IRecentRunsLoadedHandler, PlatformsReceiver.IPlatformsHandler{
     private RecyclerView recentRunsList;
     private ProgressBar progressBar;
     private GamesLoadReceiver gamesLoadReceiver;
     private RecentRunReceiver recentRunReceiver;
-    private boolean gamesLoaded, runsLoaded;
+    private PlatformsReceiver platformsReceiver;
+    private boolean gamesLoaded, runsLoaded, platformsLoaded;
     private Realm realm;
 
     @Override
@@ -42,12 +45,16 @@ public class MainActivity extends AppCompatActivity implements GamesLoadReceiver
                 .build();
         Realm.setDefaultConfiguration(config);
         gamesLoadReceiver = new GamesLoadReceiver(this, this);
+        platformsReceiver = new PlatformsReceiver(this, this);
         recentRunReceiver = new RecentRunReceiver(this, this);
         startService(new Intent(this, GamesLoadService.class));
+        startService(new Intent(this, PlatformsService.class));
         startService(new Intent(this, RecentRunService.class));
     }
 
     private void handleDataLoaded(){
+        if (!runsLoaded || !gamesLoaded || !platformsLoaded)
+            return;
         progressBar.setVisibility(View.GONE);
         realm = Realm.getDefaultInstance();
         recentRunsList.setAdapter(new RecentRunsListAdapter(Run.getByDate(realm, 20)));
@@ -55,14 +62,17 @@ public class MainActivity extends AppCompatActivity implements GamesLoadReceiver
 
     public void gamesLoaded(){
         gamesLoaded = true;
-        if(runsLoaded && gamesLoaded)
-            handleDataLoaded();
+        handleDataLoaded();
     }
 
     public void recentRunsLoaded(){
         runsLoaded = true;
-        if(runsLoaded && gamesLoaded)
-            handleDataLoaded();
+        handleDataLoaded();
+    }
+
+    public void platformsLoaded() {
+        platformsLoaded = true;
+        handleDataLoaded();
     }
 
     @Override

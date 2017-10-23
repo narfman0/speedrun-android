@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import org.atlaslabs.speedrun.R;
 import org.atlaslabs.speedrun.models.Game;
+import org.atlaslabs.speedrun.models.Platform;
 import org.atlaslabs.speedrun.models.Run;
 import org.atlaslabs.speedrun.models.User;
 
@@ -39,11 +40,12 @@ public class RecentRunsListAdapter extends RecyclerView.Adapter<RunViewHolder>{
                 User user = User.getByID(realm, player.getId());
                 holder.user.setText(user == null ? player.getId() : user.getNames().getInternational());
             }
+            Platform platform = Platform.getByID(realm, run.getSystem().getPlatform());
+            holder.platform.setText(platform == null ? run.getSystem().getPlatform() : platform.getName());
         } finally {
             realm.close();
         }
         holder.category.setText(run.getCategory());
-        holder.platform.setText(run.getSystem().getPlatform());
         holder.time.setText(run.getTimes().getPrimaryTime());
     }
 

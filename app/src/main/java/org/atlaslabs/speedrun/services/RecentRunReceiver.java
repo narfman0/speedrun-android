@@ -13,10 +13,9 @@ public class RecentRunReceiver extends BroadcastReceiver{
     public RecentRunReceiver(Context context, IRecentRunsLoadedHandler handler){
         this.context = context;
         this.handler = handler;
-        IntentFilter gamesLoadIntentFilter = new IntentFilter(
-                RecentRunService.INTENT_RECENT_RUNS_COMPLETE);
         LocalBroadcastManager.getInstance(context).registerReceiver(
-                this, gamesLoadIntentFilter);
+                this, new IntentFilter(
+                        RecentRunService.INTENT_RECENT_RUNS_COMPLETE));
     }
 
     @Override

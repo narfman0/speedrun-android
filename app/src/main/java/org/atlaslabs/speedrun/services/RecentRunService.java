@@ -17,7 +17,7 @@ import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 
 public class RecentRunService extends IntentService{
-    public static String INTENT_RECENT_RUNS_COMPLETE = "INTENT_RECENT_RUNS_COMPLETE";
+    static String INTENT_RECENT_RUNS_COMPLETE = "INTENT_RECENT_RUNS_COMPLETE";
 
     public RecentRunService(){
         super(RecentRunService.class.getSimpleName());
@@ -25,7 +25,7 @@ public class RecentRunService extends IntentService{
 
     @Override
     protected void onHandleIntent(Intent workIntent) {
-        RestUtil.createAPI().getRecentRuns()
+        RestUtil.createAPI().getRunsRecent()
                 .subscribeOn(Schedulers.newThread())
                 .subscribe((item) -> {
                     Realm realm = Realm.getDefaultInstance();
