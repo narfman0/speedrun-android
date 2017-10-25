@@ -11,10 +11,15 @@ import android.view.ViewGroup;
 import org.atlaslabs.speedrun.R;
 import org.atlaslabs.speedrun.models.Run;
 import org.atlaslabs.speedrun.ui.decorations.VerticalSpaceItemDecoration;
+import org.atlaslabs.speedrun.ui.run.RunFragment;
+import org.atlaslabs.speedrun.ui.util.RecyclerItemClickListener;
+
+import java.util.List;
 
 import io.realm.Realm;
 
 public class RecentRunFragment extends Fragment {
+    private Realm realm;
     private RecyclerView recentRunsList;
 
     public static RecentRunFragment newInstance(){
@@ -30,12 +35,28 @@ public class RecentRunFragment extends Fragment {
         recentRunsList.addItemDecoration(new VerticalSpaceItemDecoration(
                 (int) getResources().getDimension(R.dimen.run_list_divider_height)));
 
-        Realm realm = Realm.getDefaultInstance();
-        try {
-            recentRunsList.setAdapter(new RecentRunsListAdapter(Run.getByDate(realm, 20)));
-        } finally {
-            realm.close();
-        }
+        realm = Realm.getDefaultInstance();
+        final List<Run> runs = Run.getByDate(realm, 20);
+        recentRunsList.setAdapter(new RecentRunsListAdapter(runs));
+        recentRunsList.addOnItemTouchListener(
+                new RecyclerItemClickListener(getActivity(), recentRunsList, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        Run run = runs.get(position);
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .addToBackStack(RecentRunFragment.class.getSimpleName())
+                                .replace(R.id.content, RunFragment.newInstance(run))
+                                .commit();
+                    }
+                    @Override public void onLongItemClick(View view, int position) {}
+                })
+        );
         return view;
+    }
+
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
+        if(realm != null)
+            realm.close();
     }
 }

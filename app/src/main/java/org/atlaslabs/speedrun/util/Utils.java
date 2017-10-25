@@ -3,6 +3,10 @@ package org.atlaslabs.speedrun.util;
 import android.os.Handler;
 import android.os.Looper;
 
+import org.atlaslabs.speedrun.models.Link;
+
+import java.util.List;
+
 public class Utils {
     public static void runOnUIThread(Runnable r){
         new Handler(Looper.getMainLooper()).post(() -> r.run());
@@ -34,5 +38,17 @@ public class Utils {
             builder.append(ms);
         }
         return builder.toString();
+    }
+
+    public static String buildVideoLinks(List<Link> links){
+        StringBuilder linksHTMLBuilder = new StringBuilder();
+        for(Link link : links) {
+            linksHTMLBuilder.append("<a href=\"");
+            linksHTMLBuilder.append(link.getUri());
+            linksHTMLBuilder.append("\">");
+            linksHTMLBuilder.append(link.getUri());
+            linksHTMLBuilder.append("</a><br />");
+        }
+        return linksHTMLBuilder.toString();
     }
 }
