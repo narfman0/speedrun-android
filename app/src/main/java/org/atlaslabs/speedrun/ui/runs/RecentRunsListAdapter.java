@@ -1,6 +1,7 @@
 package org.atlaslabs.speedrun.ui.runs;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.Realm;
 
 public class RecentRunsListAdapter extends RecyclerView.Adapter<RunViewHolder>{
+    private static final String TAG = RecentRunsListAdapter.class.getSimpleName();
     private List<Run> runs;
 
     public RecentRunsListAdapter(List<Run> runs) {
@@ -43,7 +45,14 @@ public class RecentRunsListAdapter extends RecyclerView.Adapter<RunViewHolder>{
             for(User player : run.getPlayers()) {
                 User.getOrFetch(realm, player.getId())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe((user) -> holder.user.setText(user.getNames().getInternational()));
+                        .subscribe((user) -> {
+                            boolean nameAccessible = user != null && user.getId() != null && user.getNames() != null;
+                            if(nameAccessible)
+                                holder.user.setText(user.getNames().getInternational());
+                            else
+                                Log.w(TAG, "User name inaccessible for run: " + run.getID());
+                            holder.user.setVisibility(nameAccessible ? View.VISIBLE : View.GONE);
+                        });
             }
             Platform.getOrFetch(realm, run.getSystem().getPlatform())
                     .observeOn(AndroidSchedulers.mainThread())

@@ -39,7 +39,8 @@ public class RecentRunService extends IntentService{
                     LinkedList<String> userIds = new LinkedList<>();
                     for(Run run : item.getRuns())
                         for(User player : run.getPlayers())
-                            userIds.add(player.getId());
+                            if(player.getId() != null)
+                                userIds.add(player.getId());
                     loadUsers(userIds);
                 });
     }
