@@ -14,9 +14,11 @@ public class Run extends RealmObject{
     private String game;
     private String category;
     private String submitted;
+    private String comment;
     private Times times;
     private System system;
     private RealmList<User> players;
+    private Videos videos;
 
     public String getID(){
         return id;
@@ -34,6 +36,10 @@ public class Run extends RealmObject{
         return submitted;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
     public Times getTimes() {
         return times;
     }
@@ -44,6 +50,10 @@ public class Run extends RealmObject{
 
     public List<User> getPlayers() {
         return players;
+    }
+
+    public Videos getVideos(){
+        return videos;
     }
 
     public static List<Run> getByDate(Realm realm, int count){
