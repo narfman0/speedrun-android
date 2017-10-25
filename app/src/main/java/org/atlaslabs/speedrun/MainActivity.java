@@ -3,43 +3,32 @@ package org.atlaslabs.speedrun;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ProgressBar;
 
-import org.atlaslabs.speedrun.models.Run;
 import org.atlaslabs.speedrun.services.GamesLoadReceiver;
 import org.atlaslabs.speedrun.services.GamesLoadService;
 import org.atlaslabs.speedrun.services.PlatformsReceiver;
 import org.atlaslabs.speedrun.services.PlatformsService;
 import org.atlaslabs.speedrun.services.RecentRunReceiver;
 import org.atlaslabs.speedrun.services.RecentRunService;
-import org.atlaslabs.speedrun.ui.runs.RecentRunsListAdapter;
-import org.atlaslabs.speedrun.ui.decorations.VerticalSpaceItemDecoration;
+import org.atlaslabs.speedrun.ui.runs.RecentRunFragment;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
 public class MainActivity extends AppCompatActivity implements GamesLoadReceiver.IGamesLoadedHandler,
     RecentRunReceiver.IRecentRunsLoadedHandler, PlatformsReceiver.IPlatformsHandler{
-    private RecyclerView recentRunsList;
-    private ProgressBar progressBar;
+    private View progressBar;
     private GamesLoadReceiver gamesLoadReceiver;
     private RecentRunReceiver recentRunReceiver;
     private PlatformsReceiver platformsReceiver;
     private boolean gamesLoaded, runsLoaded, platformsLoaded;
-    private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        progressBar = (ProgressBar)findViewById(R.id.progressBar);
-        recentRunsList = (RecyclerView)findViewById(R.id.recentRunsList);
-        recentRunsList.setLayoutManager(new LinearLayoutManager(this));
-        recentRunsList.addItemDecoration(new VerticalSpaceItemDecoration(
-                (int)getResources().getDimension(R.dimen.run_list_divider_height)));
+        progressBar = findViewById(R.id.progressBar);
 
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder()
@@ -58,9 +47,10 @@ public class MainActivity extends AppCompatActivity implements GamesLoadReceiver
     private void handleDataLoaded(){
         if (!runsLoaded || !gamesLoaded || !platformsLoaded)
             return;
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content, RecentRunFragment.newInstance())
+                .commit();
         progressBar.setVisibility(View.GONE);
-        realm = Realm.getDefaultInstance();
-        recentRunsList.setAdapter(new RecentRunsListAdapter(Run.getByDate(realm, 20)));
     }
 
     public void gamesLoaded(){
@@ -87,7 +77,5 @@ public class MainActivity extends AppCompatActivity implements GamesLoadReceiver
             recentRunReceiver.clean();
         if(platformsReceiver != null)
             platformsReceiver.clean();
-        if(realm != null)
-            realm.close();
     }
 }
