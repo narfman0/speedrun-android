@@ -42,24 +42,33 @@ public class RecentRunsListAdapter extends RecyclerView.Adapter<RunViewHolder>{
             Game.getOrFetch(realm, run.getGame())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe((game) -> holder.game.setText(game.getNames().getInternational()));
-            for(User player : run.getPlayers()) {
-                User.getOrFetch(realm, player.getId())
+            for (String userID : run.getPlayersIDs()) {
+                User.getOrFetch(realm, userID)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe((user) -> {
                             boolean nameAccessible = user != null && user.getId() != null && user.getNames() != null;
-                            if(nameAccessible)
+                            if (nameAccessible)
                                 holder.user.setText(user.getNames().getInternational());
                             else
                                 Log.w(TAG, "User name inaccessible for run: " + run.getID());
                             holder.user.setVisibility(nameAccessible ? View.VISIBLE : View.GONE);
                         });
+                break;
             }
-            Platform.getOrFetch(realm, run.getSystem().getPlatform())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe( (platform) -> holder.platform.setText(platform.getName()));
-            Category.getOrFetch(realm, run.getCategory())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe((category) -> holder.category.setText(category.getName()));
+            if(run.getSystem().getPlatform() != null)
+                Platform.getOrFetch(realm, run.getSystem().getPlatform())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe((platform) -> holder.platform.setText(platform.getName()));
+            else
+                Log.i(TAG, "No platform given for run: " + run.toString());
+            if(run.getCategory() != null)
+                Category.getOrFetch(realm, run.getCategory())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe((category) -> holder.category.setText(category.getName()));
+            else
+                Log.i(TAG, "No category given for run: " + run.toString());
+        } catch(Exception e) {
+            Log.e(TAG, "Error populating list item position: " + position + " exception: " + e.toString());
         } finally {
             realm.close();
         }

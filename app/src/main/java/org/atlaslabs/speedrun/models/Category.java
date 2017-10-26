@@ -1,5 +1,8 @@
 package org.atlaslabs.speedrun.models;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+
 import org.atlaslabs.speedrun.network.RestUtil;
 
 import io.reactivex.Single;
@@ -9,6 +12,7 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class Category extends RealmObject{
+    private static final String TAG = Category.class.getSimpleName();
     @PrimaryKey
     private String id;
     private String name;
@@ -40,16 +44,19 @@ public class Category extends RealmObject{
         return realm.where(Category.class).equalTo("id", id).findFirst();
     }
 
-    public static Single<Category> getOrFetch(Realm realm, String id){
+    public static Single<Category> getOrFetch(Realm realm, @NonNull String id){
         Category category = get(realm, id);
         if(category == null)
             return fetch(id);
         return Single.just(category);
     }
 
-    public static Single<Category> fetch(String id){
+    public static Single<Category> fetch(@NonNull String id){
         return RestUtil.createAPI().getCategory(id)
                 .subscribeOn(Schedulers.newThread())
+                .doOnError((e) ->
+                    Log.e(TAG, "fetch error: " + e.toString())
+                )
                 .flatMap((item) -> {
                     Realm realm = Realm.getDefaultInstance();
                     try {

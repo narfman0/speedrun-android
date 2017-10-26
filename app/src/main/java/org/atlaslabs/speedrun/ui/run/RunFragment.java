@@ -19,6 +19,9 @@ import org.atlaslabs.speedrun.models.Run;
 import org.atlaslabs.speedrun.models.User;
 import org.atlaslabs.speedrun.util.Utils;
 
+import java.util.Arrays;
+import java.util.List;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.Realm;
 
@@ -32,7 +35,8 @@ public class RunFragment extends Fragment {
         BUNDLE_KEY_COMMENT = "BUNDLE_KEY_COMMENT",
         BUNDLE_KEY_ID = "BUNDLE_KEY_ID",
         BUNDLE_KEY_VIDEOS = "BUNDLE_KEY_VIDEOS";
-    private String id, game, user, platform, category, comment, videos;
+    private String id, game, platform, category, comment, videos;
+    private List<String> userIDs;
     private float time;
     private Realm realm;
 
@@ -40,8 +44,8 @@ public class RunFragment extends Fragment {
         RunFragment fragment = new RunFragment();
         Bundle bundle = new Bundle();
         bundle.putString(BUNDLE_KEY_GAME, run.getGame());
-        if(!run.getPlayers().isEmpty())
-            bundle.putString(BUNDLE_KEY_USER, run.getPlayers().get(0).getId());
+        if(!run.getPlayersIDs().isEmpty())
+            bundle.putString(BUNDLE_KEY_USER, Utils.join(run.getPlayersIDs().iterator(), ","));
         bundle.putString(BUNDLE_KEY_PLATFORM, run.getSystem().getPlatform());
         bundle.putString(BUNDLE_KEY_CATEGORY, run.getCategory());
         bundle.putFloat(BUNDLE_KEY_TIME, run.getTimes().getPrimaryTime());
@@ -59,7 +63,7 @@ public class RunFragment extends Fragment {
         if(getArguments() != null){
             id = getArguments().getString(BUNDLE_KEY_ID);
             game = getArguments().getString(BUNDLE_KEY_GAME);
-            user = getArguments().getString(BUNDLE_KEY_USER);
+            userIDs = Arrays.asList(getArguments().getString(BUNDLE_KEY_USER).split(","));
             platform = getArguments().getString(BUNDLE_KEY_PLATFORM);
             category = getArguments().getString(BUNDLE_KEY_CATEGORY);
             comment = getArguments().getString(BUNDLE_KEY_COMMENT);
@@ -85,22 +89,31 @@ public class RunFragment extends Fragment {
         Game.getOrFetch(realm, game)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((game) -> gameNameView.setText(game.getNames().getInternational()));
-        User.getOrFetch(realm, user)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((user) -> {
-                    if(user != null && user.getId() != null && user.getNames() != null)
-                        userNameView.setText(user.getNames().getInternational());
-                    else {
-                        Log.w(TAG, "User name inaccessible for run: " + id);
-                        userNameView.setVisibility(View.GONE);
-                    }
-                });
-        Platform.getOrFetch(realm, platform)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe( (platform) -> platformView.setText(platform.getName()));
-        Category.getOrFetch(realm, category)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((category) -> categoryView.setText(category.getName()));
+        for(String userID : userIDs){
+            User.getOrFetch(realm, userID)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe((user) -> {
+                        if (user != null && user.getId() != null && user.getNames() != null)
+                            userNameView.setText(user.getNames().getInternational());
+                        else {
+                            Log.w(TAG, "User name inaccessible for run: " + id);
+                            userNameView.setVisibility(View.GONE);
+                        }
+                    });
+            break;
+        }
+        if(platform != null)
+            Platform.getOrFetch(realm, platform)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe( (platform) -> platformView.setText(platform.getName()));
+        else
+            Log.i(TAG, "No platform given for run: " + id);
+        if(category != null)
+            Category.getOrFetch(realm, category)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe((category) -> categoryView.setText(category.getName()));
+        else
+            Log.i(TAG, "No category given for run: " + id);
         timeView.setText(Utils.timePretty(time));
         commentView.setText(comment);
         commentView.setVisibility(TextUtils.isEmpty(comment) ? View.GONE : View.VISIBLE);

@@ -5,6 +5,7 @@ import android.os.Looper;
 
 import org.atlaslabs.speedrun.models.Link;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class Utils {
@@ -50,5 +51,20 @@ public class Utils {
             linksHTMLBuilder.append("</a><br />");
         }
         return linksHTMLBuilder.toString();
+    }
+
+    /**
+     * @param iter      iterator through which we will generate data
+     * @param separator string to inject between each item
+     * @return String with each item concatenated, with separator between each concatenation
+     */
+    public static String join(Iterator<String> iter, String separator) {
+        StringBuilder sb = new StringBuilder();
+        if (iter.hasNext()) {
+            sb.append(iter.next());
+            while (iter.hasNext())
+                sb.append(separator).append(iter.next());
+        }
+        return sb.toString();
     }
 }

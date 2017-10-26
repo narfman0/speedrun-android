@@ -1,5 +1,6 @@
 package org.atlaslabs.speedrun.models;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import io.realm.Realm;
@@ -50,6 +51,17 @@ public class Run extends RealmObject{
 
     public List<User> getPlayers() {
         return players;
+    }
+
+    /**
+     * @return List of ids of players. Each id guaranteed to be non-null.
+     */
+    public List<String> getPlayersIDs() {
+        LinkedList<String> ids = new LinkedList<>();
+        for(User user : players)
+            if(user.getId() != null)
+                ids.add(user.getId());
+        return ids;
     }
 
     public Videos getVideos(){

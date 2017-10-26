@@ -36,7 +36,7 @@ public class RecentRunFragment extends Fragment {
                 (int) getResources().getDimension(R.dimen.run_list_divider_height)));
 
         realm = Realm.getDefaultInstance();
-        final List<Run> runs = Run.getByDate(realm, 20);
+        final List<Run> runs = Run.getByDate(realm, 100);
         recentRunsList.setAdapter(new RecentRunsListAdapter(runs));
         recentRunsList.addOnItemTouchListener(
                 new RecyclerItemClickListener(getActivity(), recentRunsList, new RecyclerItemClickListener.OnItemClickListener() {
