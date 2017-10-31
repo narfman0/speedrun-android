@@ -17,6 +17,7 @@ import org.atlaslabs.speedrun.models.Game;
 import org.atlaslabs.speedrun.models.Platform;
 import org.atlaslabs.speedrun.models.Run;
 import org.atlaslabs.speedrun.models.User;
+import org.atlaslabs.speedrun.ui.user.UserFragment;
 import org.atlaslabs.speedrun.util.Utils;
 
 import java.util.Arrays;
@@ -93,9 +94,15 @@ public class RunFragment extends Fragment {
             User.getOrFetch(realm, userID)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe((user) -> {
-                        if (user != null && user.getId() != null && user.getNames() != null)
+                        if (user != null && user.getId() != null && user.getNames() != null) {
                             userNameView.setText(user.getNames().getInternational());
-                        else {
+                            userNameView.setOnClickListener((c) ->
+                                getActivity().getSupportFragmentManager().beginTransaction()
+                                        .addToBackStack(RunFragment.class.getSimpleName())
+                                        .replace(R.id.content, UserFragment.newInstance(user))
+                                        .commit()
+                            );
+                        }else {
                             Log.w(TAG, "User name inaccessible for run: " + id);
                             userNameView.setVisibility(View.GONE);
                         }
