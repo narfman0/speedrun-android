@@ -11,10 +11,10 @@ public class RunViewHolder extends RecyclerView.ViewHolder{
 
     public RunViewHolder(View view) {
         super(view);
-        user = (TextView) view.findViewById(R.id.run_user);
-        game = (TextView) view.findViewById(R.id.run_game);
-        category = (TextView) view.findViewById(R.id.run_category);
-        platform = (TextView) view.findViewById(R.id.run_platform);
-        time = (TextView) view.findViewById(R.id.run_time);
+        user = view.findViewById(R.id.run_user);
+        game = view.findViewById(R.id.run_game);
+        category = view.findViewById(R.id.run_category);
+        platform = view.findViewById(R.id.run_platform);
+        time = view.findViewById(R.id.run_time);
     }
 }

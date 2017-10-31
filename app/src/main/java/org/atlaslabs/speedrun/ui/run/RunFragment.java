@@ -77,14 +77,14 @@ public class RunFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_run, container, false);
-        TextView gameNameView = (TextView) view.findViewById(R.id.run_game);
-        TextView userNameView = (TextView) view.findViewById(R.id.run_user);
-        TextView platformView = (TextView) view.findViewById(R.id.run_platform);
-        TextView categoryView = (TextView) view.findViewById(R.id.run_category);
-        TextView timeView = (TextView) view.findViewById(R.id.run_time);
-        TextView commentView = (TextView) view.findViewById(R.id.run_comment);
-        TextView videosView = (TextView) view.findViewById(R.id.run_videos);
-        TextView videosTextView = (TextView) view.findViewById(R.id.run_videos_text);
+        TextView gameNameView = view.findViewById(R.id.run_game);
+        TextView userNameView = view.findViewById(R.id.run_user);
+        TextView platformView = view.findViewById(R.id.run_platform);
+        TextView categoryView = view.findViewById(R.id.run_category);
+        TextView timeView = view.findViewById(R.id.run_time);
+        TextView commentView = view.findViewById(R.id.run_comment);
+        TextView videosView = view.findViewById(R.id.run_videos);
+        TextView videosTextView = view.findViewById(R.id.run_videos_text);
 
         realm = Realm.getDefaultInstance();
         Game.getOrFetch(realm, game)

@@ -30,7 +30,7 @@ public class RecentRunFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recent_runs, container, false);
-        recentRunsList = (RecyclerView) view.findViewById(R.id.recentRunsList);
+        recentRunsList = view.findViewById(R.id.recentRunsList);
         recentRunsList.setLayoutManager(new LinearLayoutManager(getActivity()));
         recentRunsList.addItemDecoration(new VerticalSpaceItemDecoration(
                 (int) getResources().getDimension(R.dimen.run_list_divider_height)));

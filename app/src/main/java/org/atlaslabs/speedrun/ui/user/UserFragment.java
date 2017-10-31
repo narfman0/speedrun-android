@@ -68,14 +68,14 @@ public class UserFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user, container, false);
-        TextView nameView = (TextView) view.findViewById(R.id.user_name);
-        TextView nameTextView = (TextView) view.findViewById(R.id.user_name_text);
-        TextView twitchView = (TextView) view.findViewById(R.id.user_twitch);
-        TextView twitchTextView = (TextView) view.findViewById(R.id.user_twitch_text);
-        TextView youtubeView = (TextView) view.findViewById(R.id.user_youtube);
-        TextView youtubeTextView = (TextView) view.findViewById(R.id.user_youtube_text);
-        TextView weblinkView = (TextView) view.findViewById(R.id.user_weblink);
-        TextView weblinkTextView = (TextView) view.findViewById(R.id.user_weblink_text);
+        TextView nameView = view.findViewById(R.id.user_name);
+        TextView nameTextView = view.findViewById(R.id.user_name_text);
+        TextView twitchView = view.findViewById(R.id.user_twitch);
+        TextView twitchTextView = view.findViewById(R.id.user_twitch_text);
+        TextView youtubeView = view.findViewById(R.id.user_youtube);
+        TextView youtubeTextView = view.findViewById(R.id.user_youtube_text);
+        TextView weblinkView = view.findViewById(R.id.user_weblink);
+        TextView weblinkTextView = view.findViewById(R.id.user_weblink_text);
 
         if(!TextUtils.isEmpty(name))
             nameView.setText(name);
