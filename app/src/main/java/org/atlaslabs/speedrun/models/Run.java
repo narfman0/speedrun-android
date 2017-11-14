@@ -69,6 +69,7 @@ public class Run extends RealmObject{
     }
 
     public static List<Run> getByDate(Realm realm, int count){
-        return realm.where(Run.class).findAllSorted("submitted", Sort.DESCENDING).subList(0, count);
+        List<Run> runs = realm.where(Run.class).findAllSorted("submitted", Sort.DESCENDING);
+        return runs.subList(0, Math.min(count, runs.size()));
     }
 }

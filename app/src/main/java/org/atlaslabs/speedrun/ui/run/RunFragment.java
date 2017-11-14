@@ -9,9 +9,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import org.atlaslabs.speedrun.R;
+import org.atlaslabs.speedrun.databinding.FragmentRunBinding;
 import org.atlaslabs.speedrun.models.Category;
 import org.atlaslabs.speedrun.models.Game;
 import org.atlaslabs.speedrun.models.Platform;
@@ -76,27 +76,18 @@ public class RunFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_run, container, false);
-        TextView gameNameView = view.findViewById(R.id.run_game);
-        TextView userNameView = view.findViewById(R.id.run_user);
-        TextView platformView = view.findViewById(R.id.run_platform);
-        TextView categoryView = view.findViewById(R.id.run_category);
-        TextView timeView = view.findViewById(R.id.run_time);
-        TextView commentView = view.findViewById(R.id.run_comment);
-        TextView videosView = view.findViewById(R.id.run_videos);
-        TextView videosTextView = view.findViewById(R.id.run_videos_text);
-
+        FragmentRunBinding binding = FragmentRunBinding.inflate(inflater);
         realm = Realm.getDefaultInstance();
         Game.getOrFetch(realm, game)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((game) -> gameNameView.setText(game.getNames().getInternational()));
+                .subscribe((game) -> binding.runGame.setText(game.getNames().getInternational()));
         for(String userID : userIDs){
             User.getOrFetch(realm, userID)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe((user) -> {
                         if (user != null && user.getId() != null && user.getNames() != null) {
-                            userNameView.setText(user.getNames().getInternational());
-                            userNameView.setOnClickListener((c) ->
+                            binding.runUser.setText(user.getNames().getInternational());
+                            binding.runUser.setOnClickListener((c) ->
                                 getActivity().getSupportFragmentManager().beginTransaction()
                                         .addToBackStack(RunFragment.class.getSimpleName())
                                         .replace(R.id.content, UserFragment.newInstance(user))
@@ -104,7 +95,7 @@ public class RunFragment extends Fragment {
                             );
                         }else {
                             Log.w(TAG, "User name inaccessible for run: " + id);
-                            userNameView.setVisibility(View.GONE);
+                            binding.runUser.setVisibility(View.GONE);
                         }
                     });
             break;
@@ -112,26 +103,26 @@ public class RunFragment extends Fragment {
         if(platform != null)
             Platform.getOrFetch(realm, platform)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe( (platform) -> platformView.setText(platform.getName()));
+                    .subscribe( (platform) -> binding.runPlatform.setText(platform.getName()));
         else
             Log.i(TAG, "No platform given for run: " + id);
         if(category != null)
             Category.getOrFetch(realm, category)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe((category) -> categoryView.setText(category.getName()));
+                    .subscribe((category) -> binding.runCategory.setText(category.getName()));
         else
             Log.i(TAG, "No category given for run: " + id);
-        timeView.setText(Utils.timePretty(time));
-        commentView.setText(comment);
-        commentView.setVisibility(TextUtils.isEmpty(comment) ? View.GONE : View.VISIBLE);
+        binding.runTime.setText(Utils.timePretty(time));
+        binding.runComment.setText(comment);
+        binding.runComment.setVisibility(TextUtils.isEmpty(comment) ? View.GONE : View.VISIBLE);
         if(!TextUtils.isEmpty(videos)) {
-            videosView.setText(Html.fromHtml(videos));
-            videosView.setMovementMethod(LinkMovementMethod.getInstance());
+            binding.runVideos.setText(Html.fromHtml(videos));
+            binding.runVideos.setMovementMethod(LinkMovementMethod.getInstance());
         }else{
-            videosView.setVisibility(View.GONE);
-            videosTextView.setVisibility(View.GONE);
+            binding.runVideos.setVisibility(View.GONE);
+            binding.runVideosText.setVisibility(View.GONE);
         }
-        return view;
+        return binding.getRoot();
     }
 
     @Override
