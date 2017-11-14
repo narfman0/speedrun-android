@@ -1,6 +1,8 @@
 package org.atlaslabs.speedrun.models;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.atlaslabs.speedrun.network.RestUtil;
@@ -43,6 +45,27 @@ public class User extends RealmObject{
 
     public String getRel() {
         return rel;
+    }
+
+    @Nullable
+    public String getNamePretty(){
+        if(names != null){
+            if(!TextUtils.isEmpty(names.getInternational()))
+                return names.getInternational();
+            else if(!TextUtils.isEmpty(names.getJapanese()))
+                return names.getJapanese();
+        }
+        return null;
+    }
+
+    @Nullable
+    public String getYoutubePretty(){
+        return youtube == null ? null : youtube.getUri();
+    }
+
+    @Nullable
+    public String getTwitchPretty(){
+        return twitch == null ? null : twitch.getUri();
     }
 
     public static User get(Realm realm, String id){
