@@ -1,6 +1,7 @@
 package org.atlaslabs.speedrun.ui.run;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.view.View;
 import org.atlaslabs.speedrun.R;
 import org.atlaslabs.speedrun.databinding.ActivityRunBinding;
 import org.atlaslabs.speedrun.models.Run;
+import org.atlaslabs.speedrun.ui.user.UserActivity;
 import org.atlaslabs.speedrun.util.Utils;
 
 import java.util.Arrays;
@@ -54,9 +56,14 @@ public class RunActivity extends AppCompatActivity {
             binding.runGame.setText(name);
             binding.runGame.setVisibility(View.VISIBLE);
         });
-        model.userName.observe(this, (name) -> {
+        model.user.observe(this, (user) -> {
             binding.runUser.setVisibility(View.VISIBLE);
-            binding.runUser.setText(name);
+            binding.runUser.setText(user.getNamePretty());
+            binding.runUser.setOnClickListener((c) -> {
+                Intent intent = new Intent(RunActivity.this, UserActivity.class);
+                intent.putExtras(UserActivity.buildBundle(new Bundle(), user));
+                startActivity(intent);
+            });
         });
         model.platformName.observe(this, (name) -> {
             binding.runPlatform.setText(name);

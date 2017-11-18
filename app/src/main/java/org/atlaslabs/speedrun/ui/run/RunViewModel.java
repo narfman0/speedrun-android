@@ -21,9 +21,9 @@ public class RunViewModel extends ViewModel {
     private List<String> userIDs;
     public final MutableLiveData<String>
             gameName = new MutableLiveData<>(),
-            userName = new MutableLiveData<>(),
             platformName = new MutableLiveData<>(),
             categoryName = new MutableLiveData<>();
+    public final MutableLiveData<User> user = new MutableLiveData<>();
 
     /**
      * Load data asynchronously. Expected that observers are attached to names of things
@@ -61,8 +61,8 @@ public class RunViewModel extends ViewModel {
                 User.getOrFetch(realm, userID)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe((user) -> {
-                            if (user != null && user.getId() != null && user.getNames() != null)
-                                userName.setValue(user.getNames().getInternational());
+                            if (user != null && user.getId() != null && user.getNamePretty() != null)
+                                RunViewModel.this.user.setValue(user);
                         });
                 break;
             }
