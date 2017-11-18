@@ -1,6 +1,7 @@
 package org.atlaslabs.speedrun.models;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.atlaslabs.speedrun.network.RestUtil;
@@ -40,7 +41,10 @@ public class Category extends RealmObject {
         return rules;
     }
 
+    @Nullable
     public static Category get(Realm realm, String id) {
+        if (realm == null)
+            return null;
         return realm.where(Category.class).equalTo("id", id).findFirst();
     }
 

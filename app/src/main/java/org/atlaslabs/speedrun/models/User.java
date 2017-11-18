@@ -68,7 +68,10 @@ public class User extends RealmObject {
         return twitch == null ? null : twitch.getUri();
     }
 
+    @Nullable
     public static User get(Realm realm, String id) {
+        if (realm == null)
+            return null;
         return realm.where(User.class).equalTo("id", id).findFirst();
     }
 
