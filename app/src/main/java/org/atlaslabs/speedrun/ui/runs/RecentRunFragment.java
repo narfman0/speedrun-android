@@ -1,5 +1,6 @@
 package org.atlaslabs.speedrun.ui.runs;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,7 +12,7 @@ import android.view.ViewGroup;
 import org.atlaslabs.speedrun.R;
 import org.atlaslabs.speedrun.models.Run;
 import org.atlaslabs.speedrun.ui.decorations.VerticalSpaceItemDecoration;
-import org.atlaslabs.speedrun.ui.run.RunFragment;
+import org.atlaslabs.speedrun.ui.run.RunActivity;
 import org.atlaslabs.speedrun.ui.util.RecyclerItemClickListener;
 
 import java.util.List;
@@ -43,10 +44,9 @@ public class RecentRunFragment extends Fragment {
                     @Override
                     public void onItemClick(View view, int position) {
                         Run run = runs.get(position);
-                        getActivity().getSupportFragmentManager().beginTransaction()
-                                .addToBackStack(RecentRunFragment.class.getSimpleName())
-                                .replace(R.id.content, RunFragment.newInstance(run))
-                                .commit();
+                        Intent intent = new Intent(getActivity(), RunActivity.class);
+                        intent.putExtras(RunActivity.buildBundle(new Bundle(), run));
+                        getActivity().startActivity(intent);
                     }
 
                     @Override

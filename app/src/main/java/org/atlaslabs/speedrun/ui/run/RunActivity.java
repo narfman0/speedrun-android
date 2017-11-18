@@ -1,17 +1,18 @@
 package org.atlaslabs.speedrun.ui.run;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import org.atlaslabs.speedrun.databinding.FragmentRunBinding;
+import org.atlaslabs.speedrun.R;
+import org.atlaslabs.speedrun.databinding.ActivityRunBinding;
 import org.atlaslabs.speedrun.models.Category;
 import org.atlaslabs.speedrun.models.Game;
 import org.atlaslabs.speedrun.models.Platform;
@@ -26,8 +27,8 @@ import java.util.List;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.Realm;
 
-public class RunFragment extends Fragment {
-    private static final String TAG = RunFragment.class.getSimpleName(),
+public class RunActivity extends AppCompatActivity {
+    private static final String TAG = RunActivity.class.getSimpleName(),
             BUNDLE_KEY_GAME = "BUNDLE_KEY_GAME",
             BUNDLE_KEY_USER = "BUNDLE_KEY_USER",
             BUNDLE_KEY_PLATFORM = "BUNDLE_KEY_PLATFORM",
@@ -41,42 +42,26 @@ public class RunFragment extends Fragment {
     private float time;
     private Realm realm;
 
-    public static RunFragment newInstance(Run run) {
-        RunFragment fragment = new RunFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(BUNDLE_KEY_GAME, run.getGame());
-        if (!run.getPlayersIDs().isEmpty())
-            bundle.putString(BUNDLE_KEY_USER, Utils.join(run.getPlayersIDs().iterator(), ","));
-        bundle.putString(BUNDLE_KEY_PLATFORM, run.getSystem().getPlatform());
-        bundle.putString(BUNDLE_KEY_CATEGORY, run.getCategory());
-        bundle.putFloat(BUNDLE_KEY_TIME, run.getTimes().getPrimaryTime());
-        bundle.putString(BUNDLE_KEY_COMMENT, run.getComment());
-        bundle.putString(BUNDLE_KEY_ID, run.getID());
-        if (run.getVideos() != null && run.getVideos().getLinks() != null)
-            bundle.putString(BUNDLE_KEY_VIDEOS, Utils.buildVideoLinks(run.getVideos().getLinks()));
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            id = getArguments().getString(BUNDLE_KEY_ID);
-            game = getArguments().getString(BUNDLE_KEY_GAME);
-            userIDs = Arrays.asList(getArguments().getString(BUNDLE_KEY_USER).split(","));
-            platform = getArguments().getString(BUNDLE_KEY_PLATFORM);
-            category = getArguments().getString(BUNDLE_KEY_CATEGORY);
-            comment = getArguments().getString(BUNDLE_KEY_COMMENT);
-            videos = getArguments().getString(BUNDLE_KEY_VIDEOS);
-            time = getArguments().getFloat(BUNDLE_KEY_TIME);
+        Bundle b = getIntent().getExtras();
+        if (b != null) {
+            id = b.getString(BUNDLE_KEY_ID);
+            game = b.getString(BUNDLE_KEY_GAME);
+            userIDs = Arrays.asList(b.getString(BUNDLE_KEY_USER).split(","));
+            platform = b.getString(BUNDLE_KEY_PLATFORM);
+            category = b.getString(BUNDLE_KEY_CATEGORY);
+            comment = b.getString(BUNDLE_KEY_COMMENT);
+            videos = b.getString(BUNDLE_KEY_VIDEOS);
+            time = b.getFloat(BUNDLE_KEY_TIME);
         }
-    }
+        ActivityRunBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_run);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        FragmentRunBinding binding = FragmentRunBinding.inflate(inflater);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         realm = Realm.getDefaultInstance();
         Game.getOrFetch(realm, game)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -88,9 +73,9 @@ public class RunFragment extends Fragment {
                         if (user != null && user.getId() != null && user.getNames() != null) {
                             binding.runUser.setText(user.getNames().getInternational());
                             binding.runUser.setOnClickListener((c) -> {
-                                        Intent intent = new Intent(getActivity(), UserActivity.class);
+                                        Intent intent = new Intent(RunActivity.this, UserActivity.class);
                                         intent.putExtras(UserActivity.buildBundle(new Bundle(), user));
-                                        getActivity().startActivity(intent);
+                                        startActivity(intent);
                                     }
                             );
                         } else {
@@ -122,13 +107,26 @@ public class RunFragment extends Fragment {
             binding.runVideos.setVisibility(View.GONE);
             binding.runVideosText.setVisibility(View.GONE);
         }
-        return binding.getRoot();
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
+        super.onDestroy();
         if (realm != null)
             realm.close();
+    }
+
+    public static Bundle buildBundle(Bundle bundle, Run run) {
+        bundle.putString(BUNDLE_KEY_GAME, run.getGame());
+        if (!run.getPlayersIDs().isEmpty())
+            bundle.putString(BUNDLE_KEY_USER, Utils.join(run.getPlayersIDs().iterator(), ","));
+        bundle.putString(BUNDLE_KEY_PLATFORM, run.getSystem().getPlatform());
+        bundle.putString(BUNDLE_KEY_CATEGORY, run.getCategory());
+        bundle.putFloat(BUNDLE_KEY_TIME, run.getTimes().getPrimaryTime());
+        bundle.putString(BUNDLE_KEY_COMMENT, run.getComment());
+        bundle.putString(BUNDLE_KEY_ID, run.getID());
+        if (run.getVideos() != null && run.getVideos().getLinks() != null)
+            bundle.putString(BUNDLE_KEY_VIDEOS, Utils.buildVideoLinks(run.getVideos().getLinks()));
+        return bundle;
     }
 }
