@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements GamesLoadReceiver
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder()

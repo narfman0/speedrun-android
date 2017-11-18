@@ -61,6 +61,7 @@ public class RunActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         realm = Realm.getDefaultInstance();
         Game.getOrFetch(realm, game)
@@ -107,6 +108,12 @@ public class RunActivity extends AppCompatActivity {
             binding.runVideos.setVisibility(View.GONE);
             binding.runVideosText.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     @Override

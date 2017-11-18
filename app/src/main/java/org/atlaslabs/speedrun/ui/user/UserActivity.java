@@ -12,7 +12,7 @@ import org.atlaslabs.speedrun.databinding.ActivityUserBinding;
 import org.atlaslabs.speedrun.models.User;
 
 public class UserActivity extends AppCompatActivity {
-    public static final String TAG = UserActivity.class.getSimpleName(),
+    private static final String TAG = UserActivity.class.getSimpleName(),
             BUNDLE_KEY_NAME = "BUNDLE_KEY_NAME",
             BUNDLE_KEY_YOUTUBE = "BUNDLE_KEY_YOUTUBE",
             BUNDLE_KEY_TWITCH = "BUNDLE_KEY_TWITCH",
@@ -34,6 +34,7 @@ public class UserActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         if (!TextUtils.isEmpty(name))
             binding.userName.setText(name);
@@ -59,6 +60,12 @@ public class UserActivity extends AppCompatActivity {
             binding.userWeblinkText.setVisibility(View.GONE);
             binding.userWeblink.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     public static Bundle buildBundle(Bundle bundle, User user) {
