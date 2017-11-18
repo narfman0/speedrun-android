@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
-public class GamesLoadReceiver extends BroadcastReceiver{
+public class GamesLoadReceiver extends BroadcastReceiver {
     private Context context;
     private IGamesLoadedHandler handler;
 
-    public GamesLoadReceiver(Context context, IGamesLoadedHandler handler){
+    public GamesLoadReceiver(Context context, IGamesLoadedHandler handler) {
         this.context = context;
         this.handler = handler;
         LocalBroadcastManager.getInstance(context).registerReceiver(
@@ -23,13 +23,13 @@ public class GamesLoadReceiver extends BroadcastReceiver{
         handler.gamesLoaded();
     }
 
-    public void clean(){
+    public void clean() {
         LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
         context = null;
         handler = null;
     }
 
-    public interface IGamesLoadedHandler{
+    public interface IGamesLoadedHandler {
         void gamesLoaded();
     }
 }

@@ -2,7 +2,7 @@ package org.atlaslabs.speedrun.models;
 
 import io.realm.RealmObject;
 
-public class System extends RealmObject{
+public class System extends RealmObject {
     private String platform;
     private boolean emulated;
     private String region;

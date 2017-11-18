@@ -11,7 +11,7 @@ import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class Game extends RealmObject{
+public class Game extends RealmObject {
     private static final String TAG = Game.class.getSimpleName();
     @PrimaryKey
     private String id;
@@ -40,22 +40,22 @@ public class Game extends RealmObject{
         return assets;
     }
 
-    public static Game get(Realm realm, String id){
+    public static Game get(Realm realm, String id) {
         return realm.where(Game.class).equalTo("id", id).findFirst();
     }
 
-    public static Single<Game> getOrFetch(Realm realm, @NonNull String id){
+    public static Single<Game> getOrFetch(Realm realm, @NonNull String id) {
         Game game = get(realm, id);
-        if(game == null)
+        if (game == null)
             return fetch(id);
         return Single.just(game);
     }
 
-    public static Single<Game> fetch(@NonNull String id){
+    public static Single<Game> fetch(@NonNull String id) {
         return RestUtil.createAPI().getGame(id)
                 .subscribeOn(Schedulers.newThread())
                 .doOnError((e) ->
-                    Log.e(TAG, "fetch error: " + e.toString())
+                        Log.e(TAG, "fetch error: " + e.toString())
                 )
                 .flatMap((item) -> {
                     Realm realm = Realm.getDefaultInstance();
@@ -63,7 +63,7 @@ public class Game extends RealmObject{
                         realm.beginTransaction();
                         realm.insertOrUpdate(item.getGame());
                         realm.commitTransaction();
-                    }finally{
+                    } finally {
                         realm.close();
                     }
                     return Single.just(item.getGame());

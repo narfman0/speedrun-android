@@ -9,7 +9,7 @@ import io.realm.RealmObject;
 import io.realm.Sort;
 import io.realm.annotations.PrimaryKey;
 
-public class Run extends RealmObject{
+public class Run extends RealmObject {
     @PrimaryKey
     private String id;
     private String game;
@@ -21,7 +21,7 @@ public class Run extends RealmObject{
     private RealmList<User> players;
     private Videos videos;
 
-    public String getID(){
+    public String getID() {
         return id;
     }
 
@@ -58,17 +58,17 @@ public class Run extends RealmObject{
      */
     public List<String> getPlayersIDs() {
         LinkedList<String> ids = new LinkedList<>();
-        for(User user : players)
-            if(user.getId() != null)
+        for (User user : players)
+            if (user.getId() != null)
                 ids.add(user.getId());
         return ids;
     }
 
-    public Videos getVideos(){
+    public Videos getVideos() {
         return videos;
     }
 
-    public static List<Run> getByDate(Realm realm, int count){
+    public static List<Run> getByDate(Realm realm, int count) {
         List<Run> runs = realm.where(Run.class).findAllSorted("submitted", Sort.DESCENDING);
         return runs.subList(0, Math.min(count, runs.size()));
     }

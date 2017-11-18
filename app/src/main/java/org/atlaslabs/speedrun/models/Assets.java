@@ -2,7 +2,7 @@ package org.atlaslabs.speedrun.models;
 
 import io.realm.RealmObject;
 
-public class Assets extends RealmObject{
+public class Assets extends RealmObject {
     private Asset logo, background, foreground;
 
     public Asset getLogo() {

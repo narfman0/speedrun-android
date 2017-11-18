@@ -16,10 +16,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 
-public class RecentRunService extends IntentService{
+public class RecentRunService extends IntentService {
     static String INTENT_RECENT_RUNS_COMPLETE = "INTENT_RECENT_RUNS_COMPLETE";
 
-    public RecentRunService(){
+    public RecentRunService() {
         super(RecentRunService.class.getSimpleName());
     }
 
@@ -37,17 +37,17 @@ public class RecentRunService extends IntentService{
                         realm.close();
                     }
                     LinkedList<String> userIds = new LinkedList<>();
-                    for(Run run : item.getRuns())
-                        for(User player : run.getPlayers())
-                            if(player.getId() != null)
+                    for (Run run : item.getRuns())
+                        for (User player : run.getPlayers())
+                            if (player.getId() != null)
                                 userIds.add(player.getId());
                     loadUsers(userIds);
                 });
     }
 
-    private void loadUsers(List<String> userIds){
+    private void loadUsers(List<String> userIds) {
         ConcurrentLinkedQueue<String> work = new ConcurrentLinkedQueue<>(userIds);
-        for(String userID : work)
+        for (String userID : work)
             RestUtil.createAPI().getUser(userID)
                     .subscribeOn(Schedulers.newThread())
                     .subscribe((item) -> {
@@ -62,7 +62,7 @@ public class RecentRunService extends IntentService{
                         work.remove(userID);
                     });
         // wait for work list to be completed
-        while(!work.isEmpty());
+        while (!work.isEmpty()) ;
 
         // Broadcast that we are done populating game data
         LocalBroadcastManager.getInstance(this).sendBroadcast(

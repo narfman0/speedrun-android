@@ -5,7 +5,7 @@ import org.atlaslabs.speedrun.models.Category;
 public class CategoryResponse {
     private Category data;
 
-    public Category getCategory(){
+    public Category getCategory() {
         return data;
     }
 }

@@ -11,7 +11,7 @@ import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class Category extends RealmObject{
+public class Category extends RealmObject {
     private static final String TAG = Category.class.getSimpleName();
     @PrimaryKey
     private String id;
@@ -40,22 +40,22 @@ public class Category extends RealmObject{
         return rules;
     }
 
-    public static Category get(Realm realm, String id){
+    public static Category get(Realm realm, String id) {
         return realm.where(Category.class).equalTo("id", id).findFirst();
     }
 
-    public static Single<Category> getOrFetch(Realm realm, @NonNull String id){
+    public static Single<Category> getOrFetch(Realm realm, @NonNull String id) {
         Category category = get(realm, id);
-        if(category == null)
+        if (category == null)
             return fetch(id);
         return Single.just(category);
     }
 
-    public static Single<Category> fetch(@NonNull String id){
+    public static Single<Category> fetch(@NonNull String id) {
         return RestUtil.createAPI().getCategory(id)
                 .subscribeOn(Schedulers.newThread())
                 .doOnError((e) ->
-                    Log.e(TAG, "fetch error: " + e.toString())
+                        Log.e(TAG, "fetch error: " + e.toString())
                 )
                 .flatMap((item) -> {
                     Realm realm = Realm.getDefaultInstance();
@@ -63,7 +63,7 @@ public class Category extends RealmObject{
                         realm.beginTransaction();
                         realm.insertOrUpdate(item.getCategory());
                         realm.commitTransaction();
-                    }finally{
+                    } finally {
                         realm.close();
                     }
                     return Single.just(item.getCategory());

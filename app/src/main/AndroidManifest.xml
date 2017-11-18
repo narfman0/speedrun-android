@@ -11,21 +11,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name="org.atlaslabs.speedrun.MainActivity">
+
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.user.UserActivity"
+            android:parentActivityName=".MainActivity" />
+
         <service
             android:name=".services.GamesLoadService"
-            android:exported="false"/>
+            android:exported="false" />
         <service
             android:name=".services.PlatformsService"
-            android:exported="false"/>
+            android:exported="false" />
         <service
             android:name=".services.RecentRunService"
-            android:exported="false"/>
+            android:exported="false" />
     </application>
 
 </manifest>

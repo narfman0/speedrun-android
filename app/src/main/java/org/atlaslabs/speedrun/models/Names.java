@@ -2,7 +2,7 @@ package org.atlaslabs.speedrun.models;
 
 import io.realm.RealmObject;
 
-public class Names extends RealmObject{
+public class Names extends RealmObject {
     private String international, japanese, twitch;
 
     public String getInternational() {

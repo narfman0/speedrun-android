@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
-public class RecentRunReceiver extends BroadcastReceiver{
+public class RecentRunReceiver extends BroadcastReceiver {
     private Context context;
     private IRecentRunsLoadedHandler handler;
 
-    public RecentRunReceiver(Context context, IRecentRunsLoadedHandler handler){
+    public RecentRunReceiver(Context context, IRecentRunsLoadedHandler handler) {
         this.context = context;
         this.handler = handler;
         LocalBroadcastManager.getInstance(context).registerReceiver(
@@ -23,13 +23,13 @@ public class RecentRunReceiver extends BroadcastReceiver{
         handler.recentRunsLoaded();
     }
 
-    public void clean(){
+    public void clean() {
         LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
         context = null;
         handler = null;
     }
 
-    public interface IRecentRunsLoadedHandler{
+    public interface IRecentRunsLoadedHandler {
         void recentRunsLoaded();
     }
 }

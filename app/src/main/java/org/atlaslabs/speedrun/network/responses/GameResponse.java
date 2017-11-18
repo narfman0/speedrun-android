@@ -5,7 +5,7 @@ import org.atlaslabs.speedrun.models.Game;
 public class GameResponse {
     private Game data;
 
-    public Game getGame(){
+    public Game getGame() {
         return data;
     }
 }

@@ -5,7 +5,7 @@ import org.atlaslabs.speedrun.models.User;
 public class UserResponse {
     private User data;
 
-    public User getUser(){
+    public User getUser() {
         return data;
     }
 }

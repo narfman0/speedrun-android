@@ -5,7 +5,7 @@ import org.atlaslabs.speedrun.models.Run;
 public class RunsResponse {
     private Run[] data;
 
-    public Run[] getRuns(){
+    public Run[] getRuns() {
         return data;
     }
 }

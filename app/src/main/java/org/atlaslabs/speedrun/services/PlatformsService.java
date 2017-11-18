@@ -14,7 +14,7 @@ import io.realm.Realm;
 public class PlatformsService extends IntentService {
     static final String INTENT_PLATFORMS_COMPLETE = "INTENT_PLATFORMS_COMPLETE";
 
-    public PlatformsService(){
+    public PlatformsService() {
         super(PlatformsService.class.getSimpleName());
     }
 
@@ -23,7 +23,7 @@ public class PlatformsService extends IntentService {
         Realm realm = Realm.getDefaultInstance();
         try {
             long totalPlatforms = realm.where(Platform.class).count();
-            if(totalPlatforms == 0)
+            if (totalPlatforms == 0)
                 RestUtil.createAPI().getPlatformsBulk().subscribe((item) -> {
                     realm.beginTransaction();
                     realm.copyToRealmOrUpdate(Arrays.asList(item.getPlatforms()));

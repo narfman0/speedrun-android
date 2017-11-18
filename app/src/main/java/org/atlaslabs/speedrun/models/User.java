@@ -13,7 +13,7 @@ import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class User extends RealmObject{
+public class User extends RealmObject {
     private static final String TAG = User.class.getSimpleName();
     @PrimaryKey
     private String id;
@@ -48,42 +48,42 @@ public class User extends RealmObject{
     }
 
     @Nullable
-    public String getNamePretty(){
-        if(names != null){
-            if(!TextUtils.isEmpty(names.getInternational()))
+    public String getNamePretty() {
+        if (names != null) {
+            if (!TextUtils.isEmpty(names.getInternational()))
                 return names.getInternational();
-            else if(!TextUtils.isEmpty(names.getJapanese()))
+            else if (!TextUtils.isEmpty(names.getJapanese()))
                 return names.getJapanese();
         }
         return null;
     }
 
     @Nullable
-    public String getYoutubePretty(){
+    public String getYoutubePretty() {
         return youtube == null ? null : youtube.getUri();
     }
 
     @Nullable
-    public String getTwitchPretty(){
+    public String getTwitchPretty() {
         return twitch == null ? null : twitch.getUri();
     }
 
-    public static User get(Realm realm, String id){
+    public static User get(Realm realm, String id) {
         return realm.where(User.class).equalTo("id", id).findFirst();
     }
 
-    public static Single<User> getOrFetch(Realm realm, @NonNull String id){
+    public static Single<User> getOrFetch(Realm realm, @NonNull String id) {
         User user = get(realm, id);
-        if(user == null)
+        if (user == null)
             return fetch(id);
         return Single.just(user);
     }
 
-    public static Single<User> fetch(@NonNull String id){
+    public static Single<User> fetch(@NonNull String id) {
         return RestUtil.createAPI().getUser(id)
                 .subscribeOn(Schedulers.newThread())
                 .doOnError((e) ->
-                    Log.e(TAG, "fetch error: " + e.toString())
+                        Log.e(TAG, "fetch error: " + e.toString())
                 )
                 .flatMap((item) -> {
                     Realm realm = Realm.getDefaultInstance();
@@ -91,7 +91,7 @@ public class User extends RealmObject{
                         realm.beginTransaction();
                         realm.insertOrUpdate(item.getUser());
                         realm.commitTransaction();
-                    }finally{
+                    } finally {
                         realm.close();
                     }
                     return Single.just(item.getUser());

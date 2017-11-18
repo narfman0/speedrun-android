@@ -5,7 +5,7 @@ import org.atlaslabs.speedrun.models.Platform;
 public class PlatformsResponse {
     private Platform[] data;
 
-    public Platform[] getPlatforms(){
+    public Platform[] getPlatforms() {
         return data;
     }
 }

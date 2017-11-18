@@ -22,7 +22,7 @@ public class RecentRunFragment extends Fragment {
     private Realm realm;
     private RecyclerView recentRunsList;
 
-    public static RecentRunFragment newInstance(){
+    public static RecentRunFragment newInstance() {
         return new RecentRunFragment();
     }
 
@@ -40,23 +40,27 @@ public class RecentRunFragment extends Fragment {
         recentRunsList.setAdapter(new RecentRunsListAdapter(runs));
         recentRunsList.addOnItemTouchListener(
                 new RecyclerItemClickListener(getActivity(), recentRunsList, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
+                    @Override
+                    public void onItemClick(View view, int position) {
                         Run run = runs.get(position);
                         getActivity().getSupportFragmentManager().beginTransaction()
                                 .addToBackStack(RecentRunFragment.class.getSimpleName())
                                 .replace(R.id.content, RunFragment.newInstance(run))
                                 .commit();
                     }
-                    @Override public void onLongItemClick(View view, int position) {}
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+                    }
                 })
         );
         return view;
     }
 
     @Override
-    public void onDestroyView(){
+    public void onDestroyView() {
         super.onDestroyView();
-        if(realm != null)
+        if (realm != null)
             realm.close();
     }
 }

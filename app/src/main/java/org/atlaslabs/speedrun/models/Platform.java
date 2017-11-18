@@ -11,7 +11,7 @@ import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class Platform extends RealmObject{
+public class Platform extends RealmObject {
     private static final String TAG = Platform.class.getSimpleName();
     @PrimaryKey
     private String id;
@@ -33,22 +33,22 @@ public class Platform extends RealmObject{
         return released;
     }
 
-    public static Platform get(Realm realm, String id){
+    public static Platform get(Realm realm, String id) {
         return realm.where(Platform.class).equalTo("id", id).findFirst();
     }
 
-    public static Single<Platform> getOrFetch(Realm realm, @NonNull String id){
+    public static Single<Platform> getOrFetch(Realm realm, @NonNull String id) {
         Platform platform = get(realm, id);
-        if(platform == null)
+        if (platform == null)
             return fetch(id);
         return Single.just(platform);
     }
 
-    public static Single<Platform> fetch(@NonNull String id){
+    public static Single<Platform> fetch(@NonNull String id) {
         return RestUtil.createAPI().getPlatform(id)
                 .subscribeOn(Schedulers.newThread())
                 .doOnError((e) ->
-                    Log.e(TAG, "fetch error: " + e.toString())
+                        Log.e(TAG, "fetch error: " + e.toString())
                 )
                 .flatMap((item) -> {
                     Realm realm = Realm.getDefaultInstance();
@@ -56,7 +56,7 @@ public class Platform extends RealmObject{
                         realm.beginTransaction();
                         realm.insertOrUpdate(item.getPlatform());
                         realm.commitTransaction();
-                    }finally{
+                    } finally {
                         realm.close();
                     }
                     return Single.just(item.getPlatform());

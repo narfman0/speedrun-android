@@ -17,10 +17,10 @@ import io.realm.Realm;
 /**
  * Download all games from speedrun.com and add to the database
  */
-public class GamesLoadService extends IntentService{
+public class GamesLoadService extends IntentService {
     static String INTENT_GAMES_LOAD_COMPLETE = "INTENT_GAMES_LOAD_COMPLETE";
 
-    public GamesLoadService(){
+    public GamesLoadService() {
         super(GamesLoadService.class.getSimpleName());
     }
 
@@ -29,7 +29,7 @@ public class GamesLoadService extends IntentService{
         Realm realm = Realm.getDefaultInstance();
         try {
             long totalGames = realm.where(Game.class).count();
-            if(totalGames == 0)
+            if (totalGames == 0)
                 populateGameData(realm);
         } finally {
             realm.close();
@@ -44,13 +44,13 @@ public class GamesLoadService extends IntentService{
      * We want to populate "most" games into the database. It's fine if we miss some -
      * we will grab game detail for each individual missing game.
      */
-    private void populateGameData(Realm realm){
+    private void populateGameData(Realm realm) {
         ConcurrentLinkedQueue<Boolean> workInProgress = new ConcurrentLinkedQueue<>();
         ConcurrentLinkedQueue<List<Game>> work = new ConcurrentLinkedQueue<>();
 
         // initial games seed. we want to grab most, but we can leave off some
         // until they are needed. we get detailed game info later, as well.
-        for(int i=0; i<11; i++) {
+        for (int i = 0; i < 11; i++) {
             workInProgress.add(true);
             RestUtil.createAPI().getGamesBulk(i * 1000)
                     .subscribeOn(Schedulers.newThread())
@@ -61,11 +61,11 @@ public class GamesLoadService extends IntentService{
         }
 
         // wait for threads to converge. this is essentially `join`.
-        while(!workInProgress.isEmpty());
+        while (!workInProgress.isEmpty()) ;
 
         // batch add all games at once
         realm.beginTransaction();
-        for(List<Game> games : work)
+        for (List<Game> games : work)
             realm.copyToRealmOrUpdate(games);
         realm.commitTransaction();
     }

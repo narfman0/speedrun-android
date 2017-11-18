@@ -1,0 +1,92 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.atlaslabs.speedrun.ui.user.UserActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+        <TextView
+            android:id="@+id/user_name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Username: "
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="narfman0"
+            app:layout_constraintTop_toTopOf="@+id/user_name_text"
+            app:layout_constraintLeft_toRightOf="@+id/user_name_text" />
+
+        <TextView
+            android:id="@+id/user_twitch_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Twitch: "
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/user_name_text" />
+
+        <TextView
+            android:id="@+id/user_twitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:text="https://www.twitch.tv/narfman0"
+            app:layout_constraintTop_toTopOf="@+id/user_twitch_text"
+            app:layout_constraintLeft_toRightOf="@+id/user_twitch_text" />
+
+
+        <TextView
+            android:id="@+id/user_youtube_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Youtube: "
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/user_twitch_text" />
+
+        <TextView
+            android:id="@+id/user_youtube"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:text="https://www.youtube.com/user/narfman0/videos"
+            app:layout_constraintTop_toTopOf="@+id/user_youtube_text"
+            app:layout_constraintLeft_toRightOf="@+id/user_youtube_text" />
+
+
+        <TextView
+            android:id="@+id/user_weblink_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Weblink: "
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/user_youtube_text" />
+
+        <TextView
+            android:id="@+id/user_weblink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:text="https://example.com"
+            app:layout_constraintTop_toTopOf="@+id/user_weblink_text"
+            app:layout_constraintLeft_toRightOf="@+id/user_weblink_text" />
+    </android.support.constraint.ConstraintLayout>
+</layout>

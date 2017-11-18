@@ -19,7 +19,7 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
 public class MainActivity extends AppCompatActivity implements GamesLoadReceiver.IGamesLoadedHandler,
-    RecentRunReceiver.IRecentRunsLoadedHandler, PlatformsReceiver.IPlatformsHandler{
+        RecentRunReceiver.IRecentRunsLoadedHandler, PlatformsReceiver.IPlatformsHandler {
     private View progressBar;
     private GamesLoadReceiver gamesLoadReceiver;
     private RecentRunReceiver recentRunReceiver;
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements GamesLoadReceiver
         startService(new Intent(this, RecentRunService.class));
     }
 
-    private void handleDataLoaded(){
+    private void handleDataLoaded() {
         if (!runsLoaded || !gamesLoaded || !platformsLoaded)
             return;
         getSupportFragmentManager().beginTransaction()
@@ -58,12 +58,12 @@ public class MainActivity extends AppCompatActivity implements GamesLoadReceiver
         progressBar.setVisibility(View.GONE);
     }
 
-    public void gamesLoaded(){
+    public void gamesLoaded() {
         gamesLoaded = true;
         handleDataLoaded();
     }
 
-    public void recentRunsLoaded(){
+    public void recentRunsLoaded() {
         runsLoaded = true;
         handleDataLoaded();
     }
@@ -85,13 +85,13 @@ public class MainActivity extends AppCompatActivity implements GamesLoadReceiver
     }
 
     @Override
-    protected void onDestroy(){
+    protected void onDestroy() {
         super.onDestroy();
-        if(gamesLoadReceiver != null)
+        if (gamesLoadReceiver != null)
             gamesLoadReceiver.clean();
-        if(recentRunReceiver != null)
+        if (recentRunReceiver != null)
             recentRunReceiver.clean();
-        if(platformsReceiver != null)
+        if (platformsReceiver != null)
             platformsReceiver.clean();
     }
 }

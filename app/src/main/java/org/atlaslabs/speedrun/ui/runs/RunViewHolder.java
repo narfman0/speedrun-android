@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import org.atlaslabs.speedrun.R;
 
-public class RunViewHolder extends RecyclerView.ViewHolder{
+public class RunViewHolder extends RecyclerView.ViewHolder {
     public TextView user, game, category, platform, time;
 
     public RunViewHolder(View view) {

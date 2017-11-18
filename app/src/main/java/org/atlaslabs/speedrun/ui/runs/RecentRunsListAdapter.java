@@ -19,7 +19,7 @@ import java.util.List;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.Realm;
 
-public class RecentRunsListAdapter extends RecyclerView.Adapter<RunViewHolder>{
+public class RecentRunsListAdapter extends RecyclerView.Adapter<RunViewHolder> {
     private static final String TAG = RecentRunsListAdapter.class.getSimpleName();
     private List<Run> runs;
 
@@ -55,19 +55,19 @@ public class RecentRunsListAdapter extends RecyclerView.Adapter<RunViewHolder>{
                         });
                 break;
             }
-            if(run.getSystem().getPlatform() != null)
+            if (run.getSystem().getPlatform() != null)
                 Platform.getOrFetch(realm, run.getSystem().getPlatform())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe((platform) -> holder.platform.setText(platform.getName()));
             else
                 Log.i(TAG, "No platform given for run: " + run.toString());
-            if(run.getCategory() != null)
+            if (run.getCategory() != null)
                 Category.getOrFetch(realm, run.getCategory())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe((category) -> holder.category.setText(category.getName()));
             else
                 Log.i(TAG, "No category given for run: " + run.toString());
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.e(TAG, "Error populating list item position: " + position + " exception: " + e.toString());
         } finally {
             realm.close();
