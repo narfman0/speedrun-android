@@ -1,5 +1,6 @@
 package org.atlaslabs.speedrun.ui.user;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,17 +18,17 @@ public class UserActivity extends AppCompatActivity {
             BUNDLE_KEY_YOUTUBE = "BUNDLE_KEY_YOUTUBE",
             BUNDLE_KEY_TWITCH = "BUNDLE_KEY_TWITCH",
             BUNDLE_KEY_WEBLINK = "BUNDLE_KEY_WEBLINK";
-    private String name, youtube, twitch, weblink;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        UserViewModel model = ViewModelProviders.of(this).get(UserViewModel.class);
         Bundle b = getIntent().getExtras();
         if (b != null) {
-            name = b.getString(BUNDLE_KEY_NAME);
-            youtube = b.getString(BUNDLE_KEY_YOUTUBE);
-            twitch = b.getString(BUNDLE_KEY_TWITCH);
-            weblink = b.getString(BUNDLE_KEY_WEBLINK);
+            model.setName(b.getString(BUNDLE_KEY_NAME));
+            model.setYoutube(b.getString(BUNDLE_KEY_YOUTUBE));
+            model.setTwitch(b.getString(BUNDLE_KEY_TWITCH));
+            model.setWeblink(b.getString(BUNDLE_KEY_WEBLINK));
         }
         ActivityUserBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_user);
 
@@ -36,26 +37,26 @@ public class UserActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        if (!TextUtils.isEmpty(name))
-            binding.userName.setText(name);
+        if (!TextUtils.isEmpty(model.getName()))
+            binding.userName.setText(model.getName());
         else {
             binding.userName.setVisibility(View.GONE);
             binding.userNameText.setVisibility(View.GONE);
         }
-        if (!TextUtils.isEmpty(twitch))
-            binding.userTwitch.setText(twitch);
+        if (!TextUtils.isEmpty(model.getTwitch()))
+            binding.userTwitch.setText(model.getTwitch());
         else {
             binding.userTwitchText.setVisibility(View.GONE);
             binding.userTwitch.setVisibility(View.GONE);
         }
-        if (!TextUtils.isEmpty(youtube))
-            binding.userYoutube.setText(youtube);
+        if (!TextUtils.isEmpty(model.getYoutube()))
+            binding.userYoutube.setText(model.getYoutube());
         else {
             binding.userYoutubeText.setVisibility(View.GONE);
             binding.userYoutube.setVisibility(View.GONE);
         }
-        if (!TextUtils.isEmpty(weblink))
-            binding.userWeblink.setText(weblink);
+        if (!TextUtils.isEmpty(model.getWeblink()))
+            binding.userWeblink.setText(model.getWeblink());
         else {
             binding.userWeblinkText.setVisibility(View.GONE);
             binding.userWeblink.setVisibility(View.GONE);
