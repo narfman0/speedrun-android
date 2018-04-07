@@ -1,19 +1,19 @@
 package org.atlaslabs.speedrun.models;
 
+import android.arch.persistence.room.Entity;
+
 import java.util.List;
 
-import io.realm.RealmList;
-import io.realm.RealmObject;
-
-public class Videos extends RealmObject {
+@Entity
+public class Videos {
     private String text;
-    private RealmList<Link> links;
+    private List<String> links;
 
     public String getText() {
         return text;
     }
 
-    public List<Link> getLinks() {
+    public List<String> getLinks() {
         return links;
     }
 }

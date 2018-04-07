@@ -1,6 +1,6 @@
 package org.atlaslabs.speedrun.network.responses;
 
-import org.atlaslabs.speedrun.models.Run;
+import org.atlaslabs.speedrun.network.models.Run;
 
 public class RunsResponse {
     private Run[] data;

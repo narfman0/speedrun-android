@@ -15,9 +15,6 @@ import org.atlaslabs.speedrun.services.RecentRunReceiver;
 import org.atlaslabs.speedrun.services.RecentRunService;
 import org.atlaslabs.speedrun.ui.runs.RecentRunFragment;
 
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
-
 public class MainActivity extends AppCompatActivity implements GamesLoadReceiver.IGamesLoadedHandler,
         RecentRunReceiver.IRecentRunsLoadedHandler, PlatformsReceiver.IPlatformsHandler {
     private View progressBar;
@@ -36,12 +33,6 @@ public class MainActivity extends AppCompatActivity implements GamesLoadReceiver
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        Realm.init(this);
-        RealmConfiguration config = new RealmConfiguration.Builder()
-                .schemaVersion(1)
-                .deleteRealmIfMigrationNeeded()
-                .build();
-        Realm.setDefaultConfiguration(config);
         gamesLoadReceiver = new GamesLoadReceiver(this, this);
         platformsReceiver = new PlatformsReceiver(this, this);
         recentRunReceiver = new RecentRunReceiver(this, this);

@@ -1,24 +1,20 @@
 package org.atlaslabs.speedrun.models;
 
+import android.arch.persistence.room.Embedded;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 import java.util.LinkedList;
 import java.util.List;
 
-import io.realm.Realm;
-import io.realm.RealmList;
-import io.realm.RealmObject;
-import io.realm.Sort;
-import io.realm.annotations.PrimaryKey;
-
-public class Run extends RealmObject {
+@Entity
+public class Run {
     @PrimaryKey
-    private String id;
-    private String game;
-    private String category;
-    private String submitted;
-    private String comment;
-    private Times times;
+    private String id, game, category, submitted, comment;
+    private long time;
     private System system;
-    private RealmList<User> players;
+    private List<User> players;
+    @Embedded
     private Videos videos;
 
     public String getID() {
@@ -41,8 +37,8 @@ public class Run extends RealmObject {
         return comment;
     }
 
-    public Times getTimes() {
-        return times;
+    public long getTime() {
+        return time;
     }
 
     public System getSystem() {
@@ -66,10 +62,5 @@ public class Run extends RealmObject {
 
     public Videos getVideos() {
         return videos;
-    }
-
-    public static List<Run> getByDate(Realm realm, int count) {
-        List<Run> runs = realm.where(Run.class).findAllSorted("submitted", Sort.DESCENDING);
-        return runs.subList(0, Math.min(count, runs.size()));
     }
 }

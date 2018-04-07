@@ -1,14 +1,22 @@
 package org.atlaslabs.speedrun.models;
 
-import io.realm.RealmObject;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 
-public class System extends RealmObject {
-    private String platform;
+@Entity
+public class System {
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+    private String platformID;
     private boolean emulated;
     private String region;
 
-    public String getPlatform() {
-        return platform;
+    public int getId() {
+        return id;
+    }
+
+    public String getPlatformID() {
+        return platformID;
     }
 
     public boolean isEmulated() {

@@ -1,6 +1,6 @@
 package org.atlaslabs.speedrun.network.responses;
 
-import org.atlaslabs.speedrun.models.Category;
+import org.atlaslabs.speedrun.network.models.Category;
 
 public class CategoryResponse {
     private Category data;
