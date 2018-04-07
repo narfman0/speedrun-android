@@ -41,30 +41,30 @@ public class RecentRunsListAdapter extends RecyclerView.Adapter<RunViewHolder> {
         try {
             Game.getOrFetch(realm, run.getGame())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe((game) -> holder.game.setText(game.getNames().getInternational()));
+                    .subscribe((game) -> holder.binding.runGame.setText(game.getNames().getInternational()));
             for (String userID : run.getPlayersIDs()) {
                 User.getOrFetch(realm, userID)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe((user) -> {
                             boolean nameAccessible = user != null && user.getId() != null && user.getNames() != null;
                             if (nameAccessible)
-                                holder.user.setText(user.getNames().getInternational());
+                                holder.binding.runUser.setText(user.getNames().getInternational());
                             else
                                 Log.w(TAG, "User name inaccessible for run: " + run.getID());
-                            holder.user.setVisibility(nameAccessible ? View.VISIBLE : View.GONE);
+                            holder.binding.runUser.setVisibility(nameAccessible ? View.VISIBLE : View.GONE);
                         });
                 break;
             }
             if (run.getSystem().getPlatform() != null)
                 Platform.getOrFetch(realm, run.getSystem().getPlatform())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe((platform) -> holder.platform.setText(platform.getName()));
+                        .subscribe((platform) -> holder.binding.runPlatform.setText(platform.getName()));
             else
                 Log.i(TAG, "No platform given for run: " + run.toString());
             if (run.getCategory() != null)
                 Category.getOrFetch(realm, run.getCategory())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe((category) -> holder.category.setText(category.getName()));
+                        .subscribe((category) -> holder.binding.runCategory.setText(category.getName()));
             else
                 Log.i(TAG, "No category given for run: " + run.toString());
         } catch (Exception e) {
@@ -72,7 +72,7 @@ public class RecentRunsListAdapter extends RecyclerView.Adapter<RunViewHolder> {
         } finally {
             realm.close();
         }
-        holder.time.setText(Utils.timePretty(run.getTimes().getPrimaryTime()));
+        holder.binding.runTime.setText(Utils.timePretty(run.getTimes().getPrimaryTime()));
     }
 
     @Override

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -13,6 +15,7 @@ import org.atlaslabs.speedrun.services.PlatformsReceiver;
 import org.atlaslabs.speedrun.services.PlatformsService;
 import org.atlaslabs.speedrun.services.RecentRunReceiver;
 import org.atlaslabs.speedrun.services.RecentRunService;
+import org.atlaslabs.speedrun.ui.games.GamesFragment;
 import org.atlaslabs.speedrun.ui.runs.RecentRunFragment;
 
 import io.realm.Realm;
@@ -33,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements GamesLoadReceiver
         progressBar = findViewById(R.id.progressBar);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         Realm.init(this);
@@ -53,10 +55,20 @@ public class MainActivity extends AppCompatActivity implements GamesLoadReceiver
     private void handleDataLoaded() {
         if (!runsLoaded || !gamesLoaded || !platformsLoaded)
             return;
+        navigateRecent();
+        progressBar.setVisibility(View.GONE);
+    }
+
+    private void navigateGames() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content, GamesFragment.newInstance())
+                .commit();
+    }
+
+    private void navigateRecent() {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content, RecentRunFragment.newInstance())
                 .commit();
-        progressBar.setVisibility(View.GONE);
     }
 
     public void gamesLoaded() {
@@ -75,8 +87,21 @@ public class MainActivity extends AppCompatActivity implements GamesLoadReceiver
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_recent:
+                navigateRecent();
+                return true;
+            case R.id.menu_games:
+                navigateGames();
+                return true;
             case android.R.id.home:
                 onBackPressed();
                 return true;

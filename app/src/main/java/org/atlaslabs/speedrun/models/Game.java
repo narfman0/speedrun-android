@@ -6,10 +6,13 @@ import android.util.Log;
 
 import org.atlaslabs.speedrun.network.RestUtil;
 
+import java.util.List;
+
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 import io.realm.RealmObject;
+import io.realm.Sort;
 import io.realm.annotations.PrimaryKey;
 
 public class Game extends RealmObject {
@@ -46,6 +49,14 @@ public class Game extends RealmObject {
         if (realm == null)
             return null;
         return realm.where(Game.class).equalTo("id", id).findFirst();
+    }
+
+    @Nullable
+    public static List<Game> get(Realm realm) {
+        if (realm == null)
+            return null;
+        return realm.where(Game.class)
+                .findAllSorted("id", Sort.ASCENDING);
     }
 
     public static Single<Game> getOrFetch(Realm realm, @NonNull String id) {

@@ -1,47 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="4dp"
-    android:background="@color/white">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/run_game"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="Super Mario Bros 3"/>
+        android:padding="4dp"
+        android:background="@color/white">
 
-    <TextView
-        android:id="@+id/run_platform"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_alignParentRight="true"
-        android:text="NES"/>
+        <TextView
+            android:id="@+id/run_game"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Super Mario Bros 3" />
 
-    <TextView
-        android:id="@+id/run_category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_below="@id/run_game"
-        android:text="Any% Warpless"/>
+        <TextView
+            android:id="@+id/run_platform"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_alignParentRight="true"
+            android:text="NES" />
 
-    <TextView
-        android:id="@+id/run_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/run_game"
-        android:text="55:00"/>
+        <TextView
+            android:id="@+id/run_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_below="@id/run_game"
+            android:text="Any% Warpless" />
 
-    <TextView
-        android:id="@+id/run_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_below="@id/run_category"
-        android:text="" />
-</RelativeLayout>
+        <TextView
+            android:id="@+id/run_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/run_game"
+            android:text="55:00" />
+
+        <TextView
+            android:id="@+id/run_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_below="@id/run_category"
+            android:text="" />
+    </RelativeLayout>
+</layout>

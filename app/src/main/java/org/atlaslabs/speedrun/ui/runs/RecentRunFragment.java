@@ -21,7 +21,6 @@ import io.realm.Realm;
 
 public class RecentRunFragment extends Fragment {
     private Realm realm;
-    private RecyclerView recentRunsList;
 
     public static RecentRunFragment newInstance() {
         return new RecentRunFragment();
@@ -31,7 +30,7 @@ public class RecentRunFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recent_runs, container, false);
-        recentRunsList = view.findViewById(R.id.recentRunsList);
+        RecyclerView recentRunsList = view.findViewById(R.id.recentRunsList);
         recentRunsList.setLayoutManager(new LinearLayoutManager(getActivity()));
         recentRunsList.addItemDecoration(new VerticalSpaceItemDecoration(
                 (int) getResources().getDimension(R.dimen.run_list_divider_height)));
