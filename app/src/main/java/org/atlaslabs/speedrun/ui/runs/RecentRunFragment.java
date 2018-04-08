@@ -1,6 +1,7 @@
 package org.atlaslabs.speedrun.ui.runs;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.atlaslabs.speedrun.R;
+import org.atlaslabs.speedrun.databinding.FragmentRecentRunsBinding;
 import org.atlaslabs.speedrun.models.Run;
 import org.atlaslabs.speedrun.ui.decorations.VerticalSpaceItemDecoration;
 import org.atlaslabs.speedrun.ui.run.RunActivity;
@@ -29,17 +31,18 @@ public class RecentRunFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_recent_runs, container, false);
-        RecyclerView recentRunsList = view.findViewById(R.id.recentRunsList);
-        recentRunsList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recentRunsList.addItemDecoration(new VerticalSpaceItemDecoration(
+        FragmentRecentRunsBinding binding = DataBindingUtil.inflate(inflater,
+                R.layout.fragment_recent_runs, container, false);
+        binding.recentRunsList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.recentRunsList.addItemDecoration(new VerticalSpaceItemDecoration(
                 (int) getResources().getDimension(R.dimen.run_list_divider_height)));
 
         realm = Realm.getDefaultInstance();
         final List<Run> runs = Run.getByDate(realm, 100);
-        recentRunsList.setAdapter(new RecentRunsListAdapter(runs));
-        recentRunsList.addOnItemTouchListener(
-                new RecyclerItemClickListener(getActivity(), recentRunsList, new RecyclerItemClickListener.OnItemClickListener() {
+        binding.recentRunsList.setAdapter(new RecentRunsListAdapter(runs));
+        binding.recentRunsList.addOnItemTouchListener(
+                new RecyclerItemClickListener(getActivity(), binding.recentRunsList,
+                        new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
                         Run run = runs.get(position);
@@ -53,7 +56,7 @@ public class RecentRunFragment extends Fragment {
                     }
                 })
         );
-        return view;
+        return binding.getRoot();
     }
 
     @Override
