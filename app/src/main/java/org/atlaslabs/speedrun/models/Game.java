@@ -56,7 +56,7 @@ public class Game extends RealmObject {
         if (realm == null)
             return null;
         return realm.where(Game.class)
-                .findAllSorted("id", Sort.ASCENDING);
+                .findAllSorted("names.international", Sort.ASCENDING);
     }
 
     public static Single<Game> getOrFetch(Realm realm, @NonNull String id) {
