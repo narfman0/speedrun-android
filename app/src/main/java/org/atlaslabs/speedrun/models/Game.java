@@ -10,6 +10,7 @@ import java.util.List;
 
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
+import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.Sort;
@@ -56,6 +57,15 @@ public class Game extends RealmObject {
         if (realm == null)
             return null;
         return realm.where(Game.class)
+                .findAllSorted("names.international", Sort.ASCENDING);
+    }
+
+    @Nullable
+    public static List<Game> getFiltered(Realm realm, String filter) {
+        if (realm == null)
+            return null;
+        return realm.where(Game.class)
+                .contains("names.international", filter, Case.INSENSITIVE)
                 .findAllSorted("names.international", Sort.ASCENDING);
     }
 

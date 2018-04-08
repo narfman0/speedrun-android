@@ -1,14 +1,20 @@
 package org.atlaslabs.speedrun.ui.games;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 
 import org.atlaslabs.speedrun.R;
+import org.atlaslabs.speedrun.databinding.FragmentGamesBinding;
 import org.atlaslabs.speedrun.models.Game;
 import org.atlaslabs.speedrun.ui.decorations.VerticalSpaceItemDecoration;
 
@@ -26,16 +32,25 @@ public class GamesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_games, container, false);
-        RecyclerView gamesList = view.findViewById(R.id.gamesList);
-        gamesList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        gamesList.addItemDecoration(new VerticalSpaceItemDecoration(
+        FragmentGamesBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_games,
+                container, false);
+        binding.gamesList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.gamesList.addItemDecoration(new VerticalSpaceItemDecoration(
                 (int) getResources().getDimension(R.dimen.run_list_divider_height)));
 
+        binding.gamesFilter.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                List<Game> games = Game.getFiltered(realm, s.toString());
+                binding.gamesList.setAdapter(new GamesListAdapter(games));
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
         realm = Realm.getDefaultInstance();
         final List<Game> games = Game.get(realm);
-        gamesList.setAdapter(new GamesListAdapter(games));
-        return view;
+        binding.gamesList.setAdapter(new GamesListAdapter(games));
+        return binding.getRoot();
     }
 
     @Override
