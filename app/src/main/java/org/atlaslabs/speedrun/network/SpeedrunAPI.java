@@ -1,9 +1,11 @@
 package org.atlaslabs.speedrun.network;
 
+import org.atlaslabs.speedrun.models.Leaderboard;
 import org.atlaslabs.speedrun.network.responses.CategoryResponse;
 import org.atlaslabs.speedrun.network.responses.GameCategoriesResponse;
 import org.atlaslabs.speedrun.network.responses.GameResponse;
 import org.atlaslabs.speedrun.network.responses.GamesResponse;
+import org.atlaslabs.speedrun.network.responses.LeaderboardResponse;
 import org.atlaslabs.speedrun.network.responses.PlatformResponse;
 import org.atlaslabs.speedrun.network.responses.PlatformsResponse;
 import org.atlaslabs.speedrun.network.responses.RunsResponse;
@@ -32,6 +34,10 @@ public interface SpeedrunAPI {
     @GET("games/{id}/categories")
     Single<GameCategoriesResponse> getGameCategories(
             @Path("id") String id);
+
+    @GET("leaderboards/{game_id}/category/{category_id}")
+    Single<LeaderboardResponse> getCategoryLeaderboard(
+            @Path("game_id") String gameID, @Path("category_id") String categoryID);
 
     @GET("platforms?_bulk=yes&max=1000")
     Single<PlatformsResponse> getPlatformsBulk();

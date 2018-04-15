@@ -33,9 +33,7 @@ class CategoriesAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         Category category = categories.get(position);
-        holder.itemView.setOnClickListener(v -> {
-            onClickSubject.onNext(category);
-        });
+        holder.itemView.setOnClickListener(v -> onClickSubject.onNext(category));
         holder.binding.categoryName.setText(category.getName());
     }
 
