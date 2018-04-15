@@ -27,6 +27,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="Super Mario Bros 3" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/game_categories"
+                android:scrollbars="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/game_name" />
         </RelativeLayout>
     </LinearLayout>
 </layout>

@@ -3,12 +3,16 @@ package org.atlaslabs.speedrun.ui.game;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 
 import org.atlaslabs.speedrun.R;
 import org.atlaslabs.speedrun.databinding.ActivityGameBinding;
 import org.atlaslabs.speedrun.models.Game;
 
+import java.util.Arrays;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.Realm;
 
 public class GameActivity extends AppCompatActivity {
@@ -33,6 +37,12 @@ public class GameActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         binding.gameName.setText(game.getNames().getInternational());
+        Game.fetchCategories(game.getId())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(categories -> {
+                    binding.gameCategories.setAdapter(new CategoriesAdapter(Arrays.asList(categories)));
+                });
+        binding.gameCategories.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override

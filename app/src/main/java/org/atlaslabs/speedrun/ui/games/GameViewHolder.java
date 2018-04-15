@@ -5,10 +5,10 @@ import android.view.View;
 
 import org.atlaslabs.speedrun.databinding.ViewListGameBinding;
 
-public class GameViewHolder extends RecyclerView.ViewHolder {
+class GameViewHolder extends RecyclerView.ViewHolder {
     public ViewListGameBinding binding;
 
-    public GameViewHolder(View view) {
+    GameViewHolder(View view) {
         super(view);
         binding = ViewListGameBinding.bind(view);
     }

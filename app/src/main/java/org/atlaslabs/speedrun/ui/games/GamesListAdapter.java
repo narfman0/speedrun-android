@@ -1,5 +1,6 @@
 package org.atlaslabs.speedrun.ui.games;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,22 +11,23 @@ import org.atlaslabs.speedrun.models.Game;
 
 import java.util.List;
 
-public class GamesListAdapter extends RecyclerView.Adapter<GameViewHolder> {
+class GamesListAdapter extends RecyclerView.Adapter<GameViewHolder> {
     private List<Game> games;
 
-    public GamesListAdapter(List<Game> games) {
+    GamesListAdapter(List<Game> games) {
         this.games = games;
     }
 
+    @NonNull
     @Override
-    public GameViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public GameViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.view_list_game, parent, false);
         return new GameViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(GameViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull GameViewHolder holder, int position) {
         Game game = games.get(position);
         holder.binding.gameName.setText(game.getNames().getInternational());
     }
@@ -33,5 +35,9 @@ public class GamesListAdapter extends RecyclerView.Adapter<GameViewHolder> {
     @Override
     public int getItemCount() {
         return games.size();
+    }
+
+    public Game getItem(int index) {
+        return games.get(index);
     }
 }

@@ -94,4 +94,13 @@ public class Game extends RealmObject {
                     return Single.just(item.getGame());
                 });
     }
+
+    public static Single<Category[]> fetchCategories(@NonNull String id) {
+        return RestUtil.createAPI().getGameCategories(id)
+                .subscribeOn(Schedulers.newThread())
+                .doOnError((e) ->
+                        Log.e(TAG, "fetch error: " + e.toString())
+                )
+                .flatMap(item -> Single.just(item.getCategories()));
+    }
 }

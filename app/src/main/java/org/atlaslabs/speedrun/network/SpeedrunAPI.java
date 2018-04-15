@@ -1,6 +1,7 @@
 package org.atlaslabs.speedrun.network;
 
 import org.atlaslabs.speedrun.network.responses.CategoryResponse;
+import org.atlaslabs.speedrun.network.responses.GameCategoriesResponse;
 import org.atlaslabs.speedrun.network.responses.GameResponse;
 import org.atlaslabs.speedrun.network.responses.GamesResponse;
 import org.atlaslabs.speedrun.network.responses.PlatformResponse;
@@ -27,6 +28,10 @@ public interface SpeedrunAPI {
     @GET("games?_bulk=yes&max=1000")
     Single<GamesResponse> getGamesBulk(
             @Query("offset") int offset);
+
+    @GET("games/{id}/categories")
+    Single<GameCategoriesResponse> getGameCategories(
+            @Path("id") String id);
 
     @GET("platforms?_bulk=yes&max=1000")
     Single<PlatformsResponse> getPlatformsBulk();
