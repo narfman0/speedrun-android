@@ -1,5 +1,6 @@
 package org.atlaslabs.speedrun.ui.games;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,7 +17,11 @@ import android.widget.EditText;
 import org.atlaslabs.speedrun.R;
 import org.atlaslabs.speedrun.databinding.FragmentGamesBinding;
 import org.atlaslabs.speedrun.models.Game;
+import org.atlaslabs.speedrun.models.Run;
 import org.atlaslabs.speedrun.ui.decorations.VerticalSpaceItemDecoration;
+import org.atlaslabs.speedrun.ui.game.GameActivity;
+import org.atlaslabs.speedrun.ui.run.RunActivity;
+import org.atlaslabs.speedrun.ui.util.RecyclerItemClickListener;
 
 import java.util.List;
 
@@ -50,6 +55,22 @@ public class GamesFragment extends Fragment {
         realm = Realm.getDefaultInstance();
         final List<Game> games = Game.get(realm);
         binding.gamesList.setAdapter(new GamesListAdapter(games));
+        binding.gamesList.addOnItemTouchListener(
+                new RecyclerItemClickListener(getActivity(), binding.gamesList,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                Game game = games.get(position);
+                                Intent intent = new Intent(getActivity(), GameActivity.class);
+                                intent.putExtras(GameActivity.buildBundle(new Bundle(), game));
+                                getActivity().startActivity(intent);
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+                            }
+                        })
+        );
         return binding.getRoot();
     }
 

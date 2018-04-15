@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements GamesLoadReceiver
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        progressBar.setVisibility(View.GONE);
         switch (item.getItemId()) {
             case R.id.menu_recent:
                 navigateRecent();

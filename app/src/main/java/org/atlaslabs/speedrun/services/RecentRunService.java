@@ -3,6 +3,7 @@ package org.atlaslabs.speedrun.services;
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import org.atlaslabs.speedrun.models.Run;
 import org.atlaslabs.speedrun.models.User;
@@ -17,6 +18,7 @@ import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 
 public class RecentRunService extends IntentService {
+    private static final String TAG = RecentRunService.class.getSimpleName();
     static String INTENT_RECENT_RUNS_COMPLETE = "INTENT_RECENT_RUNS_COMPLETE";
 
     public RecentRunService() {
@@ -42,7 +44,7 @@ public class RecentRunService extends IntentService {
                             if (player.getId() != null)
                                 userIds.add(player.getId());
                     loadUsers(userIds);
-                });
+                }, e -> Log.w(TAG, "Error getting recent runs: " + e));
     }
 
     private void loadUsers(List<String> userIds) {

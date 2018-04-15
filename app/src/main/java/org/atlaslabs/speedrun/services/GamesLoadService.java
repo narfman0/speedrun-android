@@ -3,6 +3,7 @@ package org.atlaslabs.speedrun.services;
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import org.atlaslabs.speedrun.models.Game;
 import org.atlaslabs.speedrun.network.RestUtil;
@@ -18,6 +19,7 @@ import io.realm.Realm;
  * Download all games from speedrun.com and add to the database
  */
 public class GamesLoadService extends IntentService {
+    private static final String TAG = GamesLoadService.class.getSimpleName();
     static String INTENT_GAMES_LOAD_COMPLETE = "INTENT_GAMES_LOAD_COMPLETE";
 
     public GamesLoadService() {
@@ -57,7 +59,7 @@ public class GamesLoadService extends IntentService {
                     .subscribe((item) -> {
                         work.add(Arrays.asList(item.getGames()));
                         workInProgress.remove();
-                    });
+                    }, e -> Log.w(TAG, "Error populating game data: " + e));
         }
 
         // wait for threads to converge. this is essentially `join`.
