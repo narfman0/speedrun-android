@@ -1,5 +1,6 @@
 package org.atlaslabs.speedrun.ui.game;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +9,9 @@ import android.support.v7.widget.Toolbar;
 
 import org.atlaslabs.speedrun.R;
 import org.atlaslabs.speedrun.databinding.ActivityGameBinding;
+import org.atlaslabs.speedrun.models.Category;
 import org.atlaslabs.speedrun.models.Game;
+import org.atlaslabs.speedrun.ui.category.CategoryActivity;
 
 import java.util.Arrays;
 
@@ -40,7 +43,13 @@ public class GameActivity extends AppCompatActivity {
         Game.fetchCategories(game.getId())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(categories -> {
-                    binding.gameCategories.setAdapter(new CategoriesAdapter(Arrays.asList(categories)));
+                    CategoriesAdapter adapter = new CategoriesAdapter(Arrays.asList(categories));
+                    binding.gameCategories.setAdapter(adapter);
+                    adapter.getClickedCategories().subscribe(c -> {
+                        Intent intent = new Intent(GameActivity.this, CategoryActivity.class);
+                        intent.putExtras(CategoryActivity.buildBundle(new Bundle(), game, c));
+                        GameActivity.this.startActivity(intent);
+                    });
                 });
         binding.gameCategories.setLayoutManager(new LinearLayoutManager(this));
     }

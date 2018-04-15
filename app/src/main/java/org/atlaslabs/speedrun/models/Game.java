@@ -6,6 +6,7 @@ import android.util.Log;
 
 import org.atlaslabs.speedrun.network.RestUtil;
 
+import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Single;
@@ -101,6 +102,16 @@ public class Game extends RealmObject {
                 .doOnError((e) ->
                         Log.e(TAG, "fetch error: " + e.toString())
                 )
-                .flatMap(item -> Single.just(item.getCategories()));
+                .flatMap(item -> {
+                    Realm realm = Realm.getDefaultInstance();
+                    try {
+                        realm.beginTransaction();
+                        realm.insertOrUpdate(Arrays.asList(item.getCategories()));
+                        realm.commitTransaction();
+                    } finally {
+                        realm.close();
+                    }
+                    return Single.just(item.getCategories());
+                });
     }
 }
