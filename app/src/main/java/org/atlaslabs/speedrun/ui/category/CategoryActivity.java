@@ -3,13 +3,18 @@ package org.atlaslabs.speedrun.ui.category;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 
 import org.atlaslabs.speedrun.R;
 import org.atlaslabs.speedrun.databinding.ActivityCategoryBinding;
 import org.atlaslabs.speedrun.models.Category;
 import org.atlaslabs.speedrun.models.Game;
+import org.atlaslabs.speedrun.models.Leaderboard;
 
+import java.util.Arrays;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.Realm;
 
 public class CategoryActivity extends AppCompatActivity {
@@ -38,6 +43,18 @@ public class CategoryActivity extends AppCompatActivity {
 
         binding.gameName.setText(game.getNames().getInternational());
         binding.categoryName.setText(category.getName());
+        Leaderboard.fetch(game.getId(), category.getId())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(l -> {
+                    RecordAdapter adapter = new RecordAdapter(Arrays.asList(l.getRuns()));
+                    binding.categoryRuns.setAdapter(adapter);
+//                    adapter.getClickedRecords().subscribe(c -> {
+//                        Intent intent = new Intent(CategoryActivity.this, CategoryActivity.class);
+//                        intent.putExtras(CategoryActivity.buildBundle(new Bundle(), game, c));
+//                        startActivity(intent);
+//                    });
+                });
+        binding.categoryRuns.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override

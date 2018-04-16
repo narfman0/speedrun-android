@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements GamesLoadReceiver
     }
 
     private void handleDataLoaded() {
-        if (!runsLoaded || !gamesLoaded || !platformsLoaded)
+        if (!runsLoaded || !gamesLoaded || !platformsLoaded || !getWindow().getDecorView().isShown())
             return;
         navigateRecent();
         progressBar.setVisibility(View.GONE);
