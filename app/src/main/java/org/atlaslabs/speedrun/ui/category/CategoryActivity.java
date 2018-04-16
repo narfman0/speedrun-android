@@ -1,5 +1,6 @@
 package org.atlaslabs.speedrun.ui.category;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,8 @@ import org.atlaslabs.speedrun.databinding.ActivityCategoryBinding;
 import org.atlaslabs.speedrun.models.Category;
 import org.atlaslabs.speedrun.models.Game;
 import org.atlaslabs.speedrun.models.Leaderboard;
+import org.atlaslabs.speedrun.ui.decorations.VerticalSpaceItemDecoration;
+import org.atlaslabs.speedrun.ui.run.RunActivity;
 
 import java.util.Arrays;
 
@@ -48,13 +51,15 @@ public class CategoryActivity extends AppCompatActivity {
                 .subscribe(l -> {
                     RecordAdapter adapter = new RecordAdapter(Arrays.asList(l.getRuns()));
                     binding.categoryRuns.setAdapter(adapter);
-//                    adapter.getClickedRecords().subscribe(c -> {
-//                        Intent intent = new Intent(CategoryActivity.this, CategoryActivity.class);
-//                        intent.putExtras(CategoryActivity.buildBundle(new Bundle(), game, c));
-//                        startActivity(intent);
-//                    });
+                    adapter.getClickedRecords().subscribe(r -> {
+                        Intent intent = new Intent(CategoryActivity.this, RunActivity.class);
+                        intent.putExtras(RunActivity.buildBundle(new Bundle(), r.getRun()));
+                        startActivity(intent);
+                    });
                 });
         binding.categoryRuns.setLayoutManager(new LinearLayoutManager(this));
+        binding.categoryRuns.addItemDecoration(new VerticalSpaceItemDecoration(
+                (int) getResources().getDimension(R.dimen.run_list_divider_height)));
     }
 
     @Override

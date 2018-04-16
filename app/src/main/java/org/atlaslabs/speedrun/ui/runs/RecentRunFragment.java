@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,18 +42,18 @@ public class RecentRunFragment extends Fragment {
         binding.recentRunsList.addOnItemTouchListener(
                 new RecyclerItemClickListener(getActivity(), binding.recentRunsList,
                         new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        Run run = runs.get(position);
-                        Intent intent = new Intent(getActivity(), RunActivity.class);
-                        intent.putExtras(RunActivity.buildBundle(new Bundle(), run));
-                        getActivity().startActivity(intent);
-                    }
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                Run run = runs.get(position);
+                                Intent intent = new Intent(getActivity(), RunActivity.class);
+                                intent.putExtras(RunActivity.buildBundle(new Bundle(), run));
+                                getActivity().startActivity(intent);
+                            }
 
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-                    }
-                })
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+                            }
+                        })
         );
         return binding.getRoot();
     }
@@ -64,5 +63,11 @@ public class RecentRunFragment extends Fragment {
         super.onDestroyView();
         if (realm != null)
             realm.close();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        realm = Realm.getDefaultInstance();
     }
 }

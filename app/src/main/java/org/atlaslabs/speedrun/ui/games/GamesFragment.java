@@ -81,4 +81,10 @@ public class GamesFragment extends Fragment {
         if (realm != null)
             realm.close();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        realm = Realm.getDefaultInstance();
+    }
 }

@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 
 import org.atlaslabs.speedrun.R;
 import org.atlaslabs.speedrun.databinding.ActivityGameBinding;
-import org.atlaslabs.speedrun.models.Category;
 import org.atlaslabs.speedrun.models.Game;
 import org.atlaslabs.speedrun.ui.category.CategoryActivity;
 
@@ -48,7 +47,7 @@ public class GameActivity extends AppCompatActivity {
                     adapter.getClickedCategories().subscribe(c -> {
                         Intent intent = new Intent(GameActivity.this, CategoryActivity.class);
                         intent.putExtras(CategoryActivity.buildBundle(new Bundle(), game, c));
-                        GameActivity.this.startActivity(intent);
+                        startActivity(intent);
                     });
                 });
         binding.gameCategories.setLayoutManager(new LinearLayoutManager(this));

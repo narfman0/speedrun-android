@@ -16,12 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
 import io.realm.Realm;
 
 class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
     private static final String TAG = RecordAdapter.class.getSimpleName();
+    private final PublishSubject<Record> onClickSubject = PublishSubject.create();
     private final List<Record> records;
 
     RecordAdapter(List<Record> categories) {
@@ -54,17 +57,21 @@ class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
                             String owner = Utils.join(usersPretty.iterator(), ", ");
                             holder.binding.recordOwner.setText(owner);
                             realm.close();
-                            // TODO add click adapter directly to run itself
                         }
                     }, e -> Log.w(TAG, "Error getting user " + userID + " data: " + e));
 
         holder.binding.recordComment.setText(record.getRun().getComment());
         holder.binding.recordPlace.setText(String.format(Locale.US, "%d", record.getPlace()));
         holder.binding.recordTime.setText(Utils.timePretty(record.getRun().getTimes().getPrimaryTime()));
+        holder.itemView.setOnClickListener(v -> onClickSubject.onNext(record));
     }
 
     @Override
     public int getItemCount() {
         return records.size();
+    }
+
+    public Observable<Record> getClickedRecords() {
+        return onClickSubject;
     }
 }
