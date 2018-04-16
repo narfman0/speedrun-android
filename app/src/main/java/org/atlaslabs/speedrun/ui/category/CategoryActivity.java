@@ -68,9 +68,9 @@ public class CategoryActivity extends AppCompatActivity {
         return true;
     }
 
-    public static Bundle buildBundle(Bundle bundle, Game game, Category category) {
-        bundle.putString(BUNDLE_KEY_ID, category.getId());
-        bundle.putString(BUNDLE_KEY_GAME_ID, game.getId());
+    public static Bundle buildBundle(Bundle bundle, String game, String category) {
+        bundle.putString(BUNDLE_KEY_ID, category);
+        bundle.putString(BUNDLE_KEY_GAME_ID, game);
         return bundle;
     }
 }

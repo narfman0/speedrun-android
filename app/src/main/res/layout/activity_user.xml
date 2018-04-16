@@ -40,7 +40,7 @@
             android:layout_margin="8dp"
             android:text="Twitch: "
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/user_name_text" />
+            app:layout_constraintTop_toBottomOf="@id/user_name" />
 
         <TextView
             android:id="@+id/user_twitch"
@@ -59,7 +59,7 @@
             android:layout_margin="8dp"
             android:text="Youtube: "
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/user_twitch_text" />
+            app:layout_constraintTop_toBottomOf="@id/user_twitch" />
 
         <TextView
             android:id="@+id/user_youtube"
@@ -78,7 +78,7 @@
             android:layout_margin="8dp"
             android:text="Weblink: "
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/user_youtube_text" />
+            app:layout_constraintTop_toBottomOf="@id/user_youtube" />
 
         <TextView
             android:id="@+id/user_weblink"

@@ -14,6 +14,7 @@ import android.view.View;
 import org.atlaslabs.speedrun.R;
 import org.atlaslabs.speedrun.databinding.ActivityRunBinding;
 import org.atlaslabs.speedrun.models.Run;
+import org.atlaslabs.speedrun.ui.category.CategoryActivity;
 import org.atlaslabs.speedrun.ui.user.UserActivity;
 import org.atlaslabs.speedrun.util.Utils;
 
@@ -52,11 +53,11 @@ public class RunActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        model.gameName.observe(this, (name) -> {
+        model.gameName.observe(this, name -> {
             binding.runGame.setText(name);
             binding.runGame.setVisibility(View.VISIBLE);
         });
-        model.user.observe(this, (user) -> {
+        model.user.observe(this, user -> {
             binding.runUser.setVisibility(View.VISIBLE);
             binding.runUser.setText(user.getNamePretty());
             binding.runUser.setOnClickListener((c) -> {
@@ -65,13 +66,18 @@ public class RunActivity extends AppCompatActivity {
                 startActivity(intent);
             });
         });
-        model.platformName.observe(this, (name) -> {
+        model.platformName.observe(this, name -> {
             binding.runPlatform.setText(name);
             binding.runPlatform.setVisibility(View.VISIBLE);
         });
-        model.categoryName.observe(this, (name) -> {
+        model.categoryName.observe(this, name -> {
             binding.runCategory.setText(name);
             binding.runCategory.setVisibility(View.VISIBLE);
+            binding.runCategory.setOnClickListener((c) -> {
+                Intent intent = new Intent(RunActivity.this, CategoryActivity.class);
+                intent.putExtras(CategoryActivity.buildBundle(new Bundle(), model.getGame(), model.getCategory()));
+                startActivity(intent);
+            });
         });
         model.load();
         binding.runTime.setText(Utils.timePretty(model.getTime()));

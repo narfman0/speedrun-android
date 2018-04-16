@@ -46,7 +46,7 @@ public class GameActivity extends AppCompatActivity {
                     binding.gameCategories.setAdapter(adapter);
                     adapter.getClickedCategories().subscribe(c -> {
                         Intent intent = new Intent(GameActivity.this, CategoryActivity.class);
-                        intent.putExtras(CategoryActivity.buildBundle(new Bundle(), game, c));
+                        intent.putExtras(CategoryActivity.buildBundle(new Bundle(), game.getId(), c.getId()));
                         startActivity(intent);
                     });
                 });
