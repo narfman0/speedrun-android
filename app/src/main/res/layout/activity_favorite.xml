@@ -1,7 +1,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="org.atlaslabs.speedrun.ui.category.CategoryActivity">
+    tools:context="org.atlaslabs.speedrun.ui.game.GameActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,38 +17,22 @@
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/game_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="Super Mario Bros. 3" />
-
-            <TextView
-                android:id="@+id/category_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_toRightOf="@+id/game_name"
-                android:text="Any%" />
-
-            <TextView
-                android:id="@+id/favorite_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_alignParentRight="true"
-                android:text="Favorite" />
+                android:text="Favorites" />
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/category_runs"
+                android:id="@+id/favorites"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/game_name" />
-        </RelativeLayout>
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </LinearLayout>
 </layout>

@@ -15,6 +15,9 @@ import org.atlaslabs.speedrun.services.PlatformsReceiver;
 import org.atlaslabs.speedrun.services.PlatformsService;
 import org.atlaslabs.speedrun.services.RecentRunReceiver;
 import org.atlaslabs.speedrun.services.RecentRunService;
+import org.atlaslabs.speedrun.ui.category.CategoryActivity;
+import org.atlaslabs.speedrun.ui.favorite.FavoriteActivity;
+import org.atlaslabs.speedrun.ui.game.GameActivity;
 import org.atlaslabs.speedrun.ui.games.GamesFragment;
 import org.atlaslabs.speedrun.ui.runs.RecentRunFragment;
 
@@ -71,6 +74,10 @@ public class MainActivity extends AppCompatActivity implements GamesLoadReceiver
                 .commit();
     }
 
+    private void navigateFavorites() {
+        startActivity(new Intent(this, FavoriteActivity.class));
+    }
+
     public void gamesLoaded() {
         gamesLoaded = true;
         handleDataLoaded();
@@ -97,6 +104,9 @@ public class MainActivity extends AppCompatActivity implements GamesLoadReceiver
     public boolean onOptionsItemSelected(MenuItem item) {
         progressBar.setVisibility(View.GONE);
         switch (item.getItemId()) {
+            case R.id.menu_favorites:
+                navigateFavorites();
+                return true;
             case R.id.menu_recent:
                 navigateRecent();
                 return true;

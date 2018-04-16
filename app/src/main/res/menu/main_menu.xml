@@ -10,4 +10,8 @@
         android:id="@+id/menu_games"
         android:title="@string/menu_games"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_favorites"
+        android:title="@string/menu_favorites"
+        app:showAsAction="ifRoom" />
 </menu>

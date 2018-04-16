@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import org.atlaslabs.speedrun.R;
 import org.atlaslabs.speedrun.databinding.ActivityCategoryBinding;
 import org.atlaslabs.speedrun.models.Category;
+import org.atlaslabs.speedrun.models.Favorite;
 import org.atlaslabs.speedrun.models.Game;
 import org.atlaslabs.speedrun.models.Leaderboard;
 import org.atlaslabs.speedrun.ui.decorations.VerticalSpaceItemDecoration;
@@ -57,6 +59,15 @@ public class CategoryActivity extends AppCompatActivity {
                         startActivity(intent);
                     });
                 });
+        binding.favoriteName.setOnClickListener(v -> {
+            Realm realm = Realm.getDefaultInstance();
+            Favorite favorite = Favorite.get(realm, category.getId(), Favorite.FavoriteType.CATEGORY);
+            if(favorite == null)
+                Favorite.insert(realm, category.getId(), Favorite.FavoriteType.CATEGORY);
+            realm.close();
+            Toast.makeText(CategoryActivity.this, "Category favorited!", Toast.LENGTH_SHORT)
+                .show();
+        });
         binding.categoryRuns.setLayoutManager(new LinearLayoutManager(this));
         binding.categoryRuns.addItemDecoration(new VerticalSpaceItemDecoration(
                 (int) getResources().getDimension(R.dimen.run_list_divider_height)));

@@ -25,6 +25,9 @@
             android:name=".ui.category.CategoryActivity"
             android:parentActivityName=".MainActivity" />
         <activity
+            android:name=".ui.favorite.FavoriteActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".ui.game.GameActivity"
             android:parentActivityName=".MainActivity" />
         <activity
