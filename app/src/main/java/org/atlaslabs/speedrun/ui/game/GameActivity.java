@@ -59,8 +59,8 @@ public class GameActivity extends AppCompatActivity {
         return true;
     }
 
-    public static Bundle buildBundle(Bundle bundle, Game game) {
-        bundle.putString(BUNDLE_KEY_ID, game.getId());
+    public static Bundle buildBundle(Bundle bundle, String gameID) {
+        bundle.putString(BUNDLE_KEY_ID, gameID);
         return bundle;
     }
 }

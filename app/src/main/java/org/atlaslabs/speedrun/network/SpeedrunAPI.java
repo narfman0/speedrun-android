@@ -1,11 +1,11 @@
 package org.atlaslabs.speedrun.network;
 
-import org.atlaslabs.speedrun.models.Leaderboard;
 import org.atlaslabs.speedrun.network.responses.CategoryResponse;
 import org.atlaslabs.speedrun.network.responses.GameCategoriesResponse;
 import org.atlaslabs.speedrun.network.responses.GameResponse;
 import org.atlaslabs.speedrun.network.responses.GamesResponse;
 import org.atlaslabs.speedrun.network.responses.LeaderboardResponse;
+import org.atlaslabs.speedrun.network.responses.PersonalBestResponse;
 import org.atlaslabs.speedrun.network.responses.PlatformResponse;
 import org.atlaslabs.speedrun.network.responses.PlatformsResponse;
 import org.atlaslabs.speedrun.network.responses.RunsResponse;
@@ -51,5 +51,9 @@ public interface SpeedrunAPI {
 
     @GET("users/{id}")
     Single<UserResponse> getUser(
+            @Path("id") String id);
+
+    @GET("users/{id}/personal-bests")
+    Single<PersonalBestResponse> getUserPersonalBest(
             @Path("id") String id);
 }

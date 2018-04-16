@@ -27,8 +27,8 @@ class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
     private final PublishSubject<Record> onClickSubject = PublishSubject.create();
     private final List<Record> records;
 
-    RecordAdapter(List<Record> categories) {
-        records = categories;
+    RecordAdapter(List<Record> records) {
+        this.records = records;
     }
 
     @NonNull

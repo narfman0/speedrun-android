@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent=".4" />
+            app:layout_constraintGuide_percent=".5" />
 
         <TextView
             android:id="@+id/record_place"
@@ -48,7 +48,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/record_owner"
+            android:id="@+id/record_game"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="12sp"
@@ -58,7 +58,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/record_comment"
+            android:id="@+id/record_category"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="12sp"

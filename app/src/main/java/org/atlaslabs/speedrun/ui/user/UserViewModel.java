@@ -3,7 +3,15 @@ package org.atlaslabs.speedrun.ui.user;
 import android.arch.lifecycle.ViewModel;
 
 public class UserViewModel extends ViewModel {
-    private String name, youtube, twitch, weblink;
+    private String id, name, youtube, twitch, weblink;
+
+    public String getID() {
+        return id;
+    }
+
+    public void setID(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

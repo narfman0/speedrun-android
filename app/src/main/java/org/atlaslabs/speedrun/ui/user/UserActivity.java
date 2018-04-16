@@ -1,9 +1,11 @@
 package org.atlaslabs.speedrun.ui.user;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,13 +13,20 @@ import android.view.View;
 import org.atlaslabs.speedrun.R;
 import org.atlaslabs.speedrun.databinding.ActivityUserBinding;
 import org.atlaslabs.speedrun.models.User;
+import org.atlaslabs.speedrun.ui.category.CategoryActivity;
+
+import java.util.Arrays;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class UserActivity extends AppCompatActivity {
     private static final String TAG = UserActivity.class.getSimpleName(),
+            BUNDLE_KEY_ID = "BUNDLE_KEY_ID",
             BUNDLE_KEY_NAME = "BUNDLE_KEY_NAME",
             BUNDLE_KEY_YOUTUBE = "BUNDLE_KEY_YOUTUBE",
             BUNDLE_KEY_TWITCH = "BUNDLE_KEY_TWITCH",
             BUNDLE_KEY_WEBLINK = "BUNDLE_KEY_WEBLINK";
+    private PersonalBestAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -25,6 +34,7 @@ public class UserActivity extends AppCompatActivity {
         UserViewModel model = ViewModelProviders.of(this).get(UserViewModel.class);
         Bundle b = getIntent().getExtras();
         if (b != null) {
+            model.setID(b.getString(BUNDLE_KEY_ID));
             model.setName(b.getString(BUNDLE_KEY_NAME));
             model.setYoutube(b.getString(BUNDLE_KEY_YOUTUBE));
             model.setTwitch(b.getString(BUNDLE_KEY_TWITCH));
@@ -61,6 +71,21 @@ public class UserActivity extends AppCompatActivity {
             binding.userWeblinkText.setVisibility(View.GONE);
             binding.userWeblink.setVisibility(View.GONE);
         }
+
+        // TODO back this off to VM
+        User.fetchPersonalBests(model.getID())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(records -> {
+                    adapter = new PersonalBestAdapter(Arrays.asList(records));
+                    adapter.getClickedRecords().subscribe(c -> {
+                        Intent intent = new Intent(UserActivity.this, CategoryActivity.class);
+                        intent.putExtras(CategoryActivity.buildBundle(new Bundle(),
+                                c.getRun().getGame(), c.getRun().getCategory()));
+                        startActivity(intent);
+                    });
+                    binding.userPersonalBests.setAdapter(adapter);
+                });
+        binding.userPersonalBests.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
@@ -70,10 +95,18 @@ public class UserActivity extends AppCompatActivity {
     }
 
     public static Bundle buildBundle(Bundle bundle, User user) {
+        bundle.putString(BUNDLE_KEY_ID, user.getId());
         bundle.putString(BUNDLE_KEY_NAME, user.getNamePretty());
         bundle.putString(BUNDLE_KEY_YOUTUBE, user.getYoutubePretty());
         bundle.putString(BUNDLE_KEY_TWITCH, user.getTwitchPretty());
         bundle.putString(BUNDLE_KEY_WEBLINK, user.getWeblink());
         return bundle;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (adapter != null)
+            adapter.destroy();
     }
 }

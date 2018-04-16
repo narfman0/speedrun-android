@@ -85,9 +85,7 @@ public class User extends RealmObject {
     public static Single<User> fetch(@NonNull String id) {
         return RestUtil.createAPI().getUser(id)
                 .subscribeOn(Schedulers.newThread())
-                .doOnError((e) ->
-                        Log.e(TAG, "fetch error: " + e.toString())
-                )
+                .doOnError((e) -> Log.e(TAG, "fetch error: " + e.toString()))
                 .flatMap((item) -> {
                     Realm realm = Realm.getDefaultInstance();
                     try {
@@ -99,5 +97,12 @@ public class User extends RealmObject {
                     }
                     return Single.just(item.getUser());
                 });
+    }
+
+    public static Single<Record[]> fetchPersonalBests(@NonNull String id) {
+        return RestUtil.createAPI().getUserPersonalBest(id)
+                .subscribeOn(Schedulers.newThread())
+                .doOnError((e) -> Log.e(TAG, "fetch error: " + e.toString()))
+                .flatMap(item -> Single.just(item.data));
     }
 }

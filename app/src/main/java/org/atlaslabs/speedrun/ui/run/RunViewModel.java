@@ -74,7 +74,7 @@ public class RunViewModel extends ViewModel {
         if (game != null)
             Game.getOrFetch(realm, game)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe((game) -> gameName.setValue(game.getNames().getInternational()));
+                    .subscribe(game -> gameName.setValue(game.getNames().getInternational()));
         else
             Log.i(TAG, "No game given for run: " + id);
     }

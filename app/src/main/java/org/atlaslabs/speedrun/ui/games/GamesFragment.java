@@ -63,7 +63,7 @@ public class GamesFragment extends Fragment {
                                 GamesListAdapter adapter = (GamesListAdapter) binding.gamesList.getAdapter();
                                 Game game = adapter.getItem(position);
                                 Intent intent = new Intent(getActivity(), GameActivity.class);
-                                intent.putExtras(GameActivity.buildBundle(new Bundle(), game));
+                                intent.putExtras(GameActivity.buildBundle(new Bundle(), game.getId()));
                                 getActivity().startActivity(intent);
                             }
 
