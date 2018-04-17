@@ -13,7 +13,7 @@ import org.atlaslabs.speedrun.R;
 import org.atlaslabs.speedrun.databinding.ActivityGamesBinding;
 import org.atlaslabs.speedrun.models.Game;
 import org.atlaslabs.speedrun.ui.game.GameActivity;
-import org.atlaslabs.speedrun.ui.util.DisposableActivity;
+import org.atlaslabs.speedrun.ui.util.AbstractActivity;
 import org.atlaslabs.speedrun.ui.util.RecyclerItemClickListener;
 import org.atlaslabs.speedrun.ui.util.VerticalSpaceItemDecoration;
 
@@ -21,7 +21,7 @@ import java.util.List;
 
 import io.realm.Realm;
 
-public class GamesActivity extends DisposableActivity {
+public class GamesActivity extends AbstractActivity {
     private Realm realm;
 
     @Override

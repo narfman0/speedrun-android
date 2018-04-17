@@ -16,7 +16,7 @@ import org.atlaslabs.speedrun.models.Game;
 import org.atlaslabs.speedrun.models.Leaderboard;
 import org.atlaslabs.speedrun.ui.game.GameActivity;
 import org.atlaslabs.speedrun.ui.run.RunActivity;
-import org.atlaslabs.speedrun.ui.util.DisposableActivity;
+import org.atlaslabs.speedrun.ui.util.AbstractActivity;
 import org.atlaslabs.speedrun.ui.util.VerticalSpaceItemDecoration;
 
 import java.util.Arrays;
@@ -24,7 +24,7 @@ import java.util.Arrays;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.Realm;
 
-public class CategoryActivity extends DisposableActivity {
+public class CategoryActivity extends AbstractActivity {
     private static final String TAG = CategoryActivity.class.getSimpleName(),
             BUNDLE_KEY_ID = "BUNDLE_KEY_ID",
             BUNDLE_KEY_GAME_ID = "BUNDLE_KEY_GAME_ID";

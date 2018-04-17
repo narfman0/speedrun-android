@@ -15,14 +15,14 @@ import org.atlaslabs.speedrun.databinding.ActivityUserBinding;
 import org.atlaslabs.speedrun.models.Favorite;
 import org.atlaslabs.speedrun.models.User;
 import org.atlaslabs.speedrun.ui.category.CategoryActivity;
-import org.atlaslabs.speedrun.ui.util.DisposableActivity;
+import org.atlaslabs.speedrun.ui.util.AbstractActivity;
 
 import java.util.Arrays;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.Realm;
 
-public class UserActivity extends DisposableActivity {
+public class UserActivity extends AbstractActivity {
     private static final String TAG = UserActivity.class.getSimpleName(),
             BUNDLE_KEY_ID = "BUNDLE_KEY_ID",
             BUNDLE_KEY_NAME = "BUNDLE_KEY_NAME",

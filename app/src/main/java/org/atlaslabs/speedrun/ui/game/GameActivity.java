@@ -12,14 +12,14 @@ import org.atlaslabs.speedrun.databinding.ActivityGameBinding;
 import org.atlaslabs.speedrun.models.Favorite;
 import org.atlaslabs.speedrun.models.Game;
 import org.atlaslabs.speedrun.ui.category.CategoryActivity;
-import org.atlaslabs.speedrun.ui.util.DisposableActivity;
+import org.atlaslabs.speedrun.ui.util.AbstractActivity;
 
 import java.util.Arrays;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.Realm;
 
-public class GameActivity extends DisposableActivity {
+public class GameActivity extends AbstractActivity {
     private static final String TAG = GameActivity.class.getSimpleName(),
             BUNDLE_KEY_ID = "BUNDLE_KEY_ID";
     private Game game;

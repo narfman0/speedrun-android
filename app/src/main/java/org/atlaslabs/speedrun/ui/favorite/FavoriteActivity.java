@@ -15,13 +15,13 @@ import org.atlaslabs.speedrun.models.User;
 import org.atlaslabs.speedrun.ui.category.CategoryActivity;
 import org.atlaslabs.speedrun.ui.game.GameActivity;
 import org.atlaslabs.speedrun.ui.user.UserActivity;
-import org.atlaslabs.speedrun.ui.util.DisposableActivity;
+import org.atlaslabs.speedrun.ui.util.AbstractActivity;
 
 import java.util.List;
 
 import io.realm.Realm;
 
-public class FavoriteActivity extends DisposableActivity {
+public class FavoriteActivity extends AbstractActivity {
     private static final String TAG = FavoriteActivity.class.getSimpleName();
     private Realm realm;
 

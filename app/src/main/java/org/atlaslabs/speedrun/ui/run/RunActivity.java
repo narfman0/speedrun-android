@@ -16,12 +16,12 @@ import org.atlaslabs.speedrun.models.Run;
 import org.atlaslabs.speedrun.ui.category.CategoryActivity;
 import org.atlaslabs.speedrun.ui.game.GameActivity;
 import org.atlaslabs.speedrun.ui.user.UserActivity;
-import org.atlaslabs.speedrun.ui.util.DisposableActivity;
+import org.atlaslabs.speedrun.ui.util.AbstractActivity;
 import org.atlaslabs.speedrun.util.Utils;
 
 import java.util.Arrays;
 
-public class RunActivity extends DisposableActivity {
+public class RunActivity extends AbstractActivity {
     private static final String TAG = RunActivity.class.getSimpleName(),
             BUNDLE_KEY_GAME = "BUNDLE_KEY_GAME",
             BUNDLE_KEY_USER = "BUNDLE_KEY_USER",
