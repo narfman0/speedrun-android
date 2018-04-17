@@ -5,9 +5,11 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import org.atlaslabs.speedrun.R;
 import org.atlaslabs.speedrun.databinding.ActivityGameBinding;
+import org.atlaslabs.speedrun.models.Favorite;
 import org.atlaslabs.speedrun.models.Game;
 import org.atlaslabs.speedrun.ui.category.CategoryActivity;
 import org.atlaslabs.speedrun.ui.util.DisposableActivity;
@@ -50,6 +52,15 @@ public class GameActivity extends DisposableActivity {
                         startActivity(intent);
                     });
                 }));
+        binding.gameFavorite.setOnClickListener(v -> {
+            Realm realm = Realm.getDefaultInstance();
+            Favorite favorite = Favorite.get(realm, game.getId(), Favorite.FavoriteType.GAME);
+            if (favorite == null)
+                Favorite.insert(realm, game.getId(), Favorite.FavoriteType.GAME);
+            realm.close();
+            Toast.makeText(GameActivity.this, "Game favorited!", Toast.LENGTH_SHORT)
+                    .show();
+        });
         binding.gameCategories.setLayoutManager(new LinearLayoutManager(this));
     }
 
