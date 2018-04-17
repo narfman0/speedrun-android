@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import org.atlaslabs.speedrun.R;
 import org.atlaslabs.speedrun.databinding.FragmentGamesBinding;
 import org.atlaslabs.speedrun.models.Game;
-import org.atlaslabs.speedrun.ui.decorations.VerticalSpaceItemDecoration;
+import org.atlaslabs.speedrun.ui.util.VerticalSpaceItemDecoration;
 import org.atlaslabs.speedrun.ui.game.GameActivity;
 import org.atlaslabs.speedrun.ui.util.RecyclerItemClickListener;
 

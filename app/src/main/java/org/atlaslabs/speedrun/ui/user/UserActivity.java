@@ -4,7 +4,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -14,12 +13,13 @@ import org.atlaslabs.speedrun.R;
 import org.atlaslabs.speedrun.databinding.ActivityUserBinding;
 import org.atlaslabs.speedrun.models.User;
 import org.atlaslabs.speedrun.ui.category.CategoryActivity;
+import org.atlaslabs.speedrun.ui.util.DisposableActivity;
 
 import java.util.Arrays;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class UserActivity extends AppCompatActivity {
+public class UserActivity extends DisposableActivity {
     private static final String TAG = UserActivity.class.getSimpleName(),
             BUNDLE_KEY_ID = "BUNDLE_KEY_ID",
             BUNDLE_KEY_NAME = "BUNDLE_KEY_NAME",
@@ -73,7 +73,7 @@ public class UserActivity extends AppCompatActivity {
         }
 
         // TODO back this off to VM
-        User.fetchPersonalBests(model.getID())
+        disposable.add(User.fetchPersonalBests(model.getID())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(records -> {
                     adapter = new PersonalBestAdapter(Arrays.asList(records));
@@ -84,7 +84,7 @@ public class UserActivity extends AppCompatActivity {
                         startActivity(intent);
                     });
                     binding.userPersonalBests.setAdapter(adapter);
-                });
+                }));
         binding.userPersonalBests.setLayoutManager(new LinearLayoutManager(this));
     }
 

@@ -3,7 +3,6 @@ package org.atlaslabs.speedrun.ui.category;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
@@ -14,15 +13,16 @@ import org.atlaslabs.speedrun.models.Category;
 import org.atlaslabs.speedrun.models.Favorite;
 import org.atlaslabs.speedrun.models.Game;
 import org.atlaslabs.speedrun.models.Leaderboard;
-import org.atlaslabs.speedrun.ui.decorations.VerticalSpaceItemDecoration;
 import org.atlaslabs.speedrun.ui.run.RunActivity;
+import org.atlaslabs.speedrun.ui.util.DisposableActivity;
+import org.atlaslabs.speedrun.ui.util.VerticalSpaceItemDecoration;
 
 import java.util.Arrays;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.Realm;
 
-public class CategoryActivity extends AppCompatActivity {
+public class CategoryActivity extends DisposableActivity {
     private static final String TAG = CategoryActivity.class.getSimpleName(),
             BUNDLE_KEY_ID = "BUNDLE_KEY_ID",
             BUNDLE_KEY_GAME_ID = "BUNDLE_KEY_GAME_ID";
@@ -48,7 +48,7 @@ public class CategoryActivity extends AppCompatActivity {
 
         binding.gameName.setText(game.getNames().getInternational());
         binding.categoryName.setText(category.getName());
-        Leaderboard.fetch(game.getId(), category.getId())
+        disposable.add(Leaderboard.fetch(game.getId(), category.getId())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(l -> {
                     RecordAdapter adapter = new RecordAdapter(Arrays.asList(l.getRuns()));
@@ -58,15 +58,15 @@ public class CategoryActivity extends AppCompatActivity {
                         intent.putExtras(RunActivity.buildBundle(new Bundle(), r.getRun()));
                         startActivity(intent);
                     });
-                });
+                }));
         binding.favoriteName.setOnClickListener(v -> {
             Realm realm = Realm.getDefaultInstance();
             Favorite favorite = Favorite.get(realm, category.getId(), Favorite.FavoriteType.CATEGORY);
-            if(favorite == null)
+            if (favorite == null)
                 Favorite.insert(realm, category.getId(), Favorite.FavoriteType.CATEGORY);
             realm.close();
             Toast.makeText(CategoryActivity.this, "Category favorited!", Toast.LENGTH_SHORT)
-                .show();
+                    .show();
         });
         binding.categoryRuns.setLayoutManager(new LinearLayoutManager(this));
         binding.categoryRuns.addItemDecoration(new VerticalSpaceItemDecoration(

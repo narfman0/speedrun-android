@@ -4,7 +4,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
@@ -17,11 +16,12 @@ import org.atlaslabs.speedrun.models.Run;
 import org.atlaslabs.speedrun.ui.category.CategoryActivity;
 import org.atlaslabs.speedrun.ui.game.GameActivity;
 import org.atlaslabs.speedrun.ui.user.UserActivity;
+import org.atlaslabs.speedrun.ui.util.DisposableActivity;
 import org.atlaslabs.speedrun.util.Utils;
 
 import java.util.Arrays;
 
-public class RunActivity extends AppCompatActivity {
+public class RunActivity extends DisposableActivity {
     private static final String TAG = RunActivity.class.getSimpleName(),
             BUNDLE_KEY_GAME = "BUNDLE_KEY_GAME",
             BUNDLE_KEY_USER = "BUNDLE_KEY_USER",

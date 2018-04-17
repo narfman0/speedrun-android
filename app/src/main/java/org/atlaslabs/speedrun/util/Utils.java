@@ -1,18 +1,11 @@
 package org.atlaslabs.speedrun.util;
 
-import android.os.Handler;
-import android.os.Looper;
-
 import org.atlaslabs.speedrun.models.Link;
 
 import java.util.Iterator;
 import java.util.List;
 
 public class Utils {
-    public static void runOnUIThread(Runnable r) {
-        new Handler(Looper.getMainLooper()).post(() -> r.run());
-    }
-
     /**
      * @param time number of seconds as a int/float, optionally including ms
      * @return pretty version of time, for example: 121.1 returns 2:01.1

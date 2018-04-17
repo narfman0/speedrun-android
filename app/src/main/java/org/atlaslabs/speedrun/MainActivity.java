@@ -2,7 +2,6 @@ package org.atlaslabs.speedrun;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,16 +14,15 @@ import org.atlaslabs.speedrun.services.PlatformsReceiver;
 import org.atlaslabs.speedrun.services.PlatformsService;
 import org.atlaslabs.speedrun.services.RecentRunReceiver;
 import org.atlaslabs.speedrun.services.RecentRunService;
-import org.atlaslabs.speedrun.ui.category.CategoryActivity;
 import org.atlaslabs.speedrun.ui.favorite.FavoriteActivity;
-import org.atlaslabs.speedrun.ui.game.GameActivity;
 import org.atlaslabs.speedrun.ui.games.GamesFragment;
 import org.atlaslabs.speedrun.ui.runs.RecentRunFragment;
+import org.atlaslabs.speedrun.ui.util.DisposableActivity;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
-public class MainActivity extends AppCompatActivity implements GamesLoadReceiver.IGamesLoadedHandler,
+public class MainActivity extends DisposableActivity implements GamesLoadReceiver.IGamesLoadedHandler,
         RecentRunReceiver.IRecentRunsLoadedHandler, PlatformsReceiver.IPlatformsHandler {
     private View progressBar;
     private GamesLoadReceiver gamesLoadReceiver;

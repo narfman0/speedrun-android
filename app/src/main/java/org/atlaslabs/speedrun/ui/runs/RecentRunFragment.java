@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import org.atlaslabs.speedrun.R;
 import org.atlaslabs.speedrun.databinding.FragmentRecentRunsBinding;
 import org.atlaslabs.speedrun.models.Run;
-import org.atlaslabs.speedrun.ui.decorations.VerticalSpaceItemDecoration;
+import org.atlaslabs.speedrun.ui.util.VerticalSpaceItemDecoration;
 import org.atlaslabs.speedrun.ui.run.RunActivity;
 import org.atlaslabs.speedrun.ui.util.RecyclerItemClickListener;
 

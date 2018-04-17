@@ -3,7 +3,6 @@ package org.atlaslabs.speedrun.ui.game;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 
@@ -11,13 +10,14 @@ import org.atlaslabs.speedrun.R;
 import org.atlaslabs.speedrun.databinding.ActivityGameBinding;
 import org.atlaslabs.speedrun.models.Game;
 import org.atlaslabs.speedrun.ui.category.CategoryActivity;
+import org.atlaslabs.speedrun.ui.util.DisposableActivity;
 
 import java.util.Arrays;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.Realm;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends DisposableActivity {
     private static final String TAG = GameActivity.class.getSimpleName(),
             BUNDLE_KEY_ID = "BUNDLE_KEY_ID";
     private Game game;
@@ -39,7 +39,7 @@ public class GameActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         binding.gameName.setText(game.getNames().getInternational());
-        Game.fetchCategories(game.getId())
+        disposable.add(Game.fetchCategories(game.getId())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(categories -> {
                     CategoriesAdapter adapter = new CategoriesAdapter(Arrays.asList(categories));
@@ -49,7 +49,7 @@ public class GameActivity extends AppCompatActivity {
                         intent.putExtras(CategoryActivity.buildBundle(new Bundle(), game.getId(), c.getId()));
                         startActivity(intent);
                     });
-                });
+                }));
         binding.gameCategories.setLayoutManager(new LinearLayoutManager(this));
     }
 

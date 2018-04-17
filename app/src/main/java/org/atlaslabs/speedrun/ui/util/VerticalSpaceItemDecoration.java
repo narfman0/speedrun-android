@@ -1,4 +1,4 @@
-package org.atlaslabs.speedrun.ui.decorations;
+package org.atlaslabs.speedrun.ui.util;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
