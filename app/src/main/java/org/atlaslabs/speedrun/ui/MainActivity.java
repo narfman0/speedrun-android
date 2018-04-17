@@ -1,4 +1,4 @@
-package org.atlaslabs.speedrun;
+package org.atlaslabs.speedrun.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,8 +6,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
+import org.atlaslabs.speedrun.R;
 import org.atlaslabs.speedrun.services.GamesLoadReceiver;
 import org.atlaslabs.speedrun.services.GamesLoadService;
 import org.atlaslabs.speedrun.services.PlatformsReceiver;
@@ -15,8 +15,8 @@ import org.atlaslabs.speedrun.services.PlatformsService;
 import org.atlaslabs.speedrun.services.RecentRunReceiver;
 import org.atlaslabs.speedrun.services.RecentRunService;
 import org.atlaslabs.speedrun.ui.favorite.FavoriteActivity;
-import org.atlaslabs.speedrun.ui.games.GamesFragment;
-import org.atlaslabs.speedrun.ui.runs.RecentRunFragment;
+import org.atlaslabs.speedrun.ui.games.GamesActivity;
+import org.atlaslabs.speedrun.ui.runs.RecentRunActivity;
 import org.atlaslabs.speedrun.ui.util.DisposableActivity;
 
 import io.realm.Realm;
@@ -24,7 +24,6 @@ import io.realm.RealmConfiguration;
 
 public class MainActivity extends DisposableActivity implements GamesLoadReceiver.IGamesLoadedHandler,
         RecentRunReceiver.IRecentRunsLoadedHandler, PlatformsReceiver.IPlatformsHandler {
-    private View progressBar;
     private GamesLoadReceiver gamesLoadReceiver;
     private RecentRunReceiver recentRunReceiver;
     private PlatformsReceiver platformsReceiver;
@@ -34,7 +33,7 @@ public class MainActivity extends DisposableActivity implements GamesLoadReceive
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        progressBar = findViewById(R.id.progressBar);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -57,19 +56,14 @@ public class MainActivity extends DisposableActivity implements GamesLoadReceive
         if (!runsLoaded || !gamesLoaded || !platformsLoaded || !getWindow().getDecorView().isShown())
             return;
         navigateRecent();
-        progressBar.setVisibility(View.GONE);
     }
 
     private void navigateGames() {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content, GamesFragment.newInstance())
-                .commit();
+        startActivity(new Intent(this, GamesActivity.class));
     }
 
     private void navigateRecent() {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content, RecentRunFragment.newInstance())
-                .commit();
+        startActivity(new Intent(this, RecentRunActivity.class));
     }
 
     private void navigateFavorites() {
@@ -100,7 +94,6 @@ public class MainActivity extends DisposableActivity implements GamesLoadReceive
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        progressBar.setVisibility(View.GONE);
         switch (item.getItemId()) {
             case R.id.menu_favorites:
                 navigateFavorites();
