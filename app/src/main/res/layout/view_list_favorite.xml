@@ -33,13 +33,13 @@
             app:layout_constraintStart_toEndOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <ImageView
             android:id="@+id/favorite_remove"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:textSize="12sp"
-            android:text="X"
+            android:src="@drawable/ic_delete"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

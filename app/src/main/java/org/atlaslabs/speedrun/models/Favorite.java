@@ -46,32 +46,24 @@ public class Favorite extends RealmObject {
     }
 
     @Nullable
-    public static List<Favorite> get(Realm realm) {
-        if (realm == null)
-            return null;
+    public static List<Favorite> get(@NonNull Realm realm) {
         return realm.where(Favorite.class).findAll();
     }
 
-    public static void insert(Realm realm, @NonNull String id, @NonNull FavoriteType type) {
-        if (realm == null)
-            return;
+    public static void insert(@NonNull Realm realm, @NonNull String id, @NonNull FavoriteType type) {
         realm.beginTransaction();
         realm.insert(new Favorite(id, type));
         realm.commitTransaction();
     }
 
-    public static void insert(Realm realm, @NonNull String id, @NonNull String id2, @NonNull FavoriteType type) {
-        if (realm == null)
-            return;
+    public static void insert(@NonNull Realm realm, @NonNull String id, @NonNull String id2, @NonNull FavoriteType type) {
         realm.beginTransaction();
         realm.insert(new Favorite(id, type).setId2(id2));
         realm.commitTransaction();
     }
 
     @Nullable
-    public static Favorite get(Realm realm, @NonNull String id, @NonNull FavoriteType type) {
-        if (realm == null)
-            return null;
+    public static Favorite get(@NonNull Realm realm, @NonNull String id, @NonNull FavoriteType type) {
         return realm.where(Favorite.class)
                 .equalTo("id", id)
                 .equalTo("type", type.ordinal())
@@ -79,9 +71,8 @@ public class Favorite extends RealmObject {
     }
 
     @Nullable
-    public static Favorite get(Realm realm, @NonNull String id, @NonNull String id2, @NonNull FavoriteType type) {
-        if (realm == null)
-            return null;
+    public static Favorite get(@NonNull Realm realm, @NonNull String id, @NonNull String id2,
+                               @NonNull FavoriteType type) {
         return realm.where(Favorite.class)
                 .equalTo("id", id)
                 .equalTo("id2", id2)
@@ -89,14 +80,14 @@ public class Favorite extends RealmObject {
                 .findFirst();
     }
 
-    public static boolean remove(Realm realm, Favorite favorite) {
-        if (realm == null)
-            return false;
-        return realm.where(Favorite.class)
+    public static void remove(@NonNull Realm realm, Favorite favorite) {
+        realm.beginTransaction();
+        realm.where(Favorite.class)
                 .equalTo("id", favorite.id)
                 .equalTo("id2", favorite.id2)
                 .equalTo("type", favorite.type)
                 .findAll().deleteAllFromRealm();
+        realm.commitTransaction();
     }
 
     public enum FavoriteType {

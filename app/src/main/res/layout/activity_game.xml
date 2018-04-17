@@ -28,13 +28,13 @@
                 android:layout_margin="8dp"
                 android:text="Super Mario Bros 3" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/game_favorite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_margin="8dp"
-                android:text="Favorite" />
+                android:src="@drawable/ic_favorite_border" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/game_categories"

@@ -64,11 +64,7 @@ public class FavoriteActivity extends AbstractActivity {
                 }
             }
         }));
-        disposable.add(adapter.getRemoved().subscribe(f -> {
-            realm.beginTransaction();
-            Favorite.remove(realm, f);
-            realm.commitTransaction();
-        }));
+        disposable.add(adapter.getRemoved().subscribe(f -> Favorite.remove(realm, f)));
         binding.favorites.setLayoutManager(new LinearLayoutManager(this));
     }
 

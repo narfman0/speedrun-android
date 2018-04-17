@@ -24,6 +24,8 @@ import java.util.Arrays;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.Realm;
 
+import static org.atlaslabs.speedrun.models.Favorite.FavoriteType.CATEGORY;
+
 public class CategoryActivity extends AbstractActivity {
     private static final String TAG = CategoryActivity.class.getSimpleName(),
             BUNDLE_KEY_ID = "BUNDLE_KEY_ID",
@@ -69,13 +71,25 @@ public class CategoryActivity extends AbstractActivity {
                         " category: " + category.getId() + " error: " + e)));
         binding.favoriteName.setOnClickListener(v -> {
             Realm realm = Realm.getDefaultInstance();
-            Favorite favorite = Favorite.get(realm, category.getId(), game.getId(), Favorite.FavoriteType.CATEGORY);
-            if (favorite == null)
-                Favorite.insert(realm, category.getId(), game.getId(), Favorite.FavoriteType.CATEGORY);
+            Favorite favorite = Favorite.get(realm, category.getId(), game.getId(), CATEGORY);
+            if (favorite == null) {
+                binding.favoriteName.setImageResource(R.drawable.ic_favorite);
+                Favorite.insert(realm, category.getId(), game.getId(), CATEGORY);
+                Toast.makeText(CategoryActivity.this, "Category favorited!", Toast.LENGTH_SHORT)
+                        .show();
+            } else {
+                Favorite.remove(realm, new Favorite(category.getId(), CATEGORY).setId2(game.getId()));
+                binding.favoriteName.setImageResource(R.drawable.ic_favorite_border);
+                Toast.makeText(CategoryActivity.this, "Favorite removed", Toast.LENGTH_SHORT)
+                        .show();
+            }
             realm.close();
-            Toast.makeText(CategoryActivity.this, "Category favorited!", Toast.LENGTH_SHORT)
-                    .show();
         });
+        Realm realm = Realm.getDefaultInstance();
+        if (Favorite.get(realm, category.getId(), game.getId(), CATEGORY) != null)
+            binding.favoriteName.setImageResource(R.drawable.ic_favorite);
+        realm.close();
+
         binding.categoryRuns.setLayoutManager(new LinearLayoutManager(this));
         binding.categoryRuns.addItemDecoration(new VerticalSpaceItemDecoration(
                 (int) getResources().getDimension(R.dimen.run_list_divider_height)));

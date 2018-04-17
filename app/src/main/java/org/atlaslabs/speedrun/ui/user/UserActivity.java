@@ -22,6 +22,8 @@ import java.util.Arrays;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.Realm;
 
+import static org.atlaslabs.speedrun.models.Favorite.FavoriteType.USER;
+
 public class UserActivity extends AbstractActivity {
     private static final String TAG = UserActivity.class.getSimpleName(),
             BUNDLE_KEY_ID = "BUNDLE_KEY_ID",
@@ -76,13 +78,25 @@ public class UserActivity extends AbstractActivity {
         }
         binding.userFavorite.setOnClickListener(v -> {
             Realm realm = Realm.getDefaultInstance();
-            Favorite favorite = Favorite.get(realm, model.getID(), Favorite.FavoriteType.USER);
-            if (favorite == null)
-                Favorite.insert(realm, model.getID(), Favorite.FavoriteType.USER);
+            Favorite favorite = Favorite.get(realm, model.getID(), USER);
+            if (favorite == null) {
+                binding.userFavorite.setImageResource(R.drawable.ic_favorite);
+                Favorite.insert(realm, model.getID(), USER);
+                Toast.makeText(UserActivity.this, "User favorited!", Toast.LENGTH_SHORT)
+                        .show();
+            } else {
+                Favorite.remove(realm, new Favorite(model.getID(), USER));
+                binding.userFavorite.setImageResource(R.drawable.ic_favorite_border);
+                Toast.makeText(UserActivity.this, "Favorite removed", Toast.LENGTH_SHORT)
+                        .show();
+            }
             realm.close();
-            Toast.makeText(UserActivity.this, "User favorited!", Toast.LENGTH_SHORT)
-                    .show();
         });
+
+        Realm realm = Realm.getDefaultInstance();
+        if (Favorite.get(realm, model.getID(), USER) != null)
+            binding.userFavorite.setImageResource(R.drawable.ic_favorite);
+        realm.close();
 
         // TODO back this off to VM
         disposable.add(User.fetchPersonalBests(model.getID())

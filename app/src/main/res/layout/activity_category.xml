@@ -36,13 +36,13 @@
                 android:layout_toRightOf="@+id/game_name"
                 android:text="Any%" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/favorite_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:layout_alignParentRight="true"
-                android:text="Favorite" />
+                android:src="@drawable/ic_favorite_border" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/category_runs"

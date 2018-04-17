@@ -19,6 +19,8 @@ import java.util.Arrays;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.Realm;
 
+import static org.atlaslabs.speedrun.models.Favorite.FavoriteType.GAME;
+
 public class GameActivity extends AbstractActivity {
     private static final String TAG = GameActivity.class.getSimpleName(),
             BUNDLE_KEY_ID = "BUNDLE_KEY_ID";
@@ -40,6 +42,7 @@ public class GameActivity extends AbstractActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        binding.gameCategories.setLayoutManager(new LinearLayoutManager(this));
         binding.gameName.setText(game.getNames().getInternational());
         disposable.add(Game.fetchCategories(game.getId())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -52,16 +55,28 @@ public class GameActivity extends AbstractActivity {
                         startActivity(intent);
                     });
                 }));
+
         binding.gameFavorite.setOnClickListener(v -> {
             Realm realm = Realm.getDefaultInstance();
-            Favorite favorite = Favorite.get(realm, game.getId(), Favorite.FavoriteType.GAME);
-            if (favorite == null)
-                Favorite.insert(realm, game.getId(), Favorite.FavoriteType.GAME);
+            Favorite favorite = Favorite.get(realm, game.getId(), GAME);
+            if (favorite == null) {
+                binding.gameFavorite.setImageResource(R.drawable.ic_favorite);
+                Favorite.insert(realm, game.getId(), GAME);
+                Toast.makeText(GameActivity.this, "Game favorited!", Toast.LENGTH_SHORT)
+                        .show();
+            } else {
+                Favorite.remove(realm, new Favorite(game.getId(), GAME));
+                binding.gameFavorite.setImageResource(R.drawable.ic_favorite_border);
+                Toast.makeText(GameActivity.this, "Favorite removed", Toast.LENGTH_SHORT)
+                        .show();
+            }
             realm.close();
-            Toast.makeText(GameActivity.this, "Game favorited!", Toast.LENGTH_SHORT)
-                    .show();
         });
-        binding.gameCategories.setLayoutManager(new LinearLayoutManager(this));
+
+        Realm realm = Realm.getDefaultInstance();
+        if (Favorite.get(realm, game.getId(), GAME) != null)
+            binding.gameFavorite.setImageResource(R.drawable.ic_favorite);
+        realm.close();
     }
 
     @Override
