@@ -8,9 +8,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
 
 import org.atlaslabs.speedrun.R;
 import org.atlaslabs.speedrun.databinding.ActivityUserBinding;
+import org.atlaslabs.speedrun.models.Favorite;
 import org.atlaslabs.speedrun.models.User;
 import org.atlaslabs.speedrun.ui.category.CategoryActivity;
 import org.atlaslabs.speedrun.ui.util.DisposableActivity;
@@ -18,6 +20,7 @@ import org.atlaslabs.speedrun.ui.util.DisposableActivity;
 import java.util.Arrays;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.realm.Realm;
 
 public class UserActivity extends DisposableActivity {
     private static final String TAG = UserActivity.class.getSimpleName(),
@@ -71,6 +74,15 @@ public class UserActivity extends DisposableActivity {
             binding.userWeblinkText.setVisibility(View.GONE);
             binding.userWeblink.setVisibility(View.GONE);
         }
+        binding.userFavorite.setOnClickListener(v -> {
+            Realm realm = Realm.getDefaultInstance();
+            Favorite favorite = Favorite.get(realm, model.getID(), Favorite.FavoriteType.USER);
+            if (favorite == null)
+                Favorite.insert(realm, model.getID(), Favorite.FavoriteType.USER);
+            realm.close();
+            Toast.makeText(UserActivity.this, "User favorited!", Toast.LENGTH_SHORT)
+                    .show();
+        });
 
         // TODO back this off to VM
         disposable.add(User.fetchPersonalBests(model.getID())

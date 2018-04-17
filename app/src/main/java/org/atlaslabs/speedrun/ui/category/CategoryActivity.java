@@ -69,7 +69,7 @@ public class CategoryActivity extends DisposableActivity {
                         " category: " + category.getId() + " error: " + e)));
         binding.favoriteName.setOnClickListener(v -> {
             Realm realm = Realm.getDefaultInstance();
-            Favorite favorite = Favorite.get(realm, category.getId(), Favorite.FavoriteType.CATEGORY);
+            Favorite favorite = Favorite.get(realm, category.getId(), game.getId(), Favorite.FavoriteType.CATEGORY);
             if (favorite == null)
                 Favorite.insert(realm, category.getId(), game.getId(), Favorite.FavoriteType.CATEGORY);
             realm.close();
