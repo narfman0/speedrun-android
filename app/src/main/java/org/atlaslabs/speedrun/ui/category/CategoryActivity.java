@@ -14,6 +14,7 @@ import org.atlaslabs.speedrun.models.Category;
 import org.atlaslabs.speedrun.models.Favorite;
 import org.atlaslabs.speedrun.models.Game;
 import org.atlaslabs.speedrun.models.Leaderboard;
+import org.atlaslabs.speedrun.ui.game.GameActivity;
 import org.atlaslabs.speedrun.ui.run.RunActivity;
 import org.atlaslabs.speedrun.ui.util.DisposableActivity;
 import org.atlaslabs.speedrun.ui.util.VerticalSpaceItemDecoration;
@@ -48,6 +49,11 @@ public class CategoryActivity extends DisposableActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         binding.gameName.setText(game.getNames().getInternational());
+        binding.gameName.setOnClickListener(v -> {
+            Intent intent = new Intent(CategoryActivity.this, GameActivity.class);
+            intent.putExtras(GameActivity.buildBundle(new Bundle(), game.getId()));
+            startActivity(intent);
+        });
         binding.categoryName.setText(category.getName());
         disposable.add(Leaderboard.fetch(game.getId(), category.getId())
                 .observeOn(AndroidSchedulers.mainThread())
