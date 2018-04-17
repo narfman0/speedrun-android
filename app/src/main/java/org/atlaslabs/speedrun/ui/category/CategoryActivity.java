@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.atlaslabs.speedrun.R;
@@ -58,12 +59,13 @@ public class CategoryActivity extends DisposableActivity {
                         intent.putExtras(RunActivity.buildBundle(new Bundle(), r.getRun()));
                         startActivity(intent);
                     });
-                }));
+                }, e -> Log.e(TAG, "Error getting leaderboard for game: " + game.getId() +
+                        " category: " + category.getId() + " error: " + e)));
         binding.favoriteName.setOnClickListener(v -> {
             Realm realm = Realm.getDefaultInstance();
             Favorite favorite = Favorite.get(realm, category.getId(), Favorite.FavoriteType.CATEGORY);
             if (favorite == null)
-                Favorite.insert(realm, category.getId(), Favorite.FavoriteType.CATEGORY);
+                Favorite.insert(realm, category.getId(), game.getId(), Favorite.FavoriteType.CATEGORY);
             realm.close();
             Toast.makeText(CategoryActivity.this, "Category favorited!", Toast.LENGTH_SHORT)
                     .show();

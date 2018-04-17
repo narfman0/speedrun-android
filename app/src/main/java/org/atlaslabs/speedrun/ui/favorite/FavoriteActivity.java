@@ -10,6 +10,7 @@ import org.atlaslabs.speedrun.R;
 import org.atlaslabs.speedrun.databinding.ActivityFavoriteBinding;
 import org.atlaslabs.speedrun.models.Category;
 import org.atlaslabs.speedrun.models.Favorite;
+import org.atlaslabs.speedrun.models.Game;
 import org.atlaslabs.speedrun.models.User;
 import org.atlaslabs.speedrun.ui.category.CategoryActivity;
 import org.atlaslabs.speedrun.ui.game.GameActivity;
@@ -39,12 +40,12 @@ public class FavoriteActivity extends DisposableActivity {
         FavoriteAdapter adapter = new FavoriteAdapter(favorites);
         binding.favorites.setAdapter(adapter);
         disposable.add(adapter.getClicked().subscribe(f -> {
-            Realm realm = Realm.getDefaultInstance();
             switch (f.getType()) {
                 case CATEGORY: {
                     Category category = Category.get(realm, f.getId());
+                    Game game = Game.get(realm, f.getId2());
                     Intent intent = new Intent(FavoriteActivity.this, CategoryActivity.class);
-                    intent.putExtras(CategoryActivity.buildBundle(new Bundle(), null, category.getId()));
+                    intent.putExtras(CategoryActivity.buildBundle(new Bundle(), game.getId(), category.getId()));
                     startActivity(intent);
                     break;
                 }
@@ -62,7 +63,11 @@ public class FavoriteActivity extends DisposableActivity {
                     break;
                 }
             }
-            realm.close();
+        }));
+        disposable.add(adapter.getRemoved().subscribe(f -> {
+            realm.beginTransaction();
+            Favorite.remove(realm, f);
+            realm.commitTransaction();
         }));
         binding.favorites.setLayoutManager(new LinearLayoutManager(this));
     }

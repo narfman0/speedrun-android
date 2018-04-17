@@ -12,6 +12,7 @@ import org.atlaslabs.speedrun.models.Favorite;
 import org.atlaslabs.speedrun.models.Game;
 import org.atlaslabs.speedrun.models.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -19,11 +20,12 @@ import io.reactivex.subjects.PublishSubject;
 import io.realm.Realm;
 
 class FavoriteAdapter extends RecyclerView.Adapter<FavoriteViewHolder> {
-    private final PublishSubject<Favorite> onClickSubject = PublishSubject.create();
+    private final PublishSubject<Favorite> onClickSubject = PublishSubject.create(),
+            onClickSubjectRemoved = PublishSubject.create();
     private final List<Favorite> favorites;
 
     FavoriteAdapter(List<Favorite> favorites) {
-        this.favorites = favorites;
+        this.favorites = new ArrayList<>(favorites);
     }
 
     @NonNull
@@ -36,24 +38,35 @@ class FavoriteAdapter extends RecyclerView.Adapter<FavoriteViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull FavoriteViewHolder holder, int position) {
-        Favorite favorite = favorites.get(position);
+        final Favorite favorite = favorites.get(position);
         Realm realm = Realm.getDefaultInstance();
         switch (favorite.getType()) {
-            case CATEGORY:
+            case CATEGORY: {
                 Category category = Category.get(realm, favorite.getId());
-                holder.binding.favoriteName.setText(category.getName());
+                Game game = Game.get(realm, favorite.getId2());
+                holder.binding.favoriteFirst.setText(game.getNames().getInternational());
+                holder.binding.favoriteSecond.setText(category.getName());
                 break;
+            }
             case GAME:
                 Game game = Game.get(realm, favorite.getId());
-                holder.binding.favoriteName.setText(game.getNames().getInternational());
+                holder.binding.favoriteFirst.setText("Game");
+                holder.binding.favoriteSecond.setText(game.getNames().getInternational());
                 break;
             case USER:
                 User user = User.get(realm, favorite.getId());
-                holder.binding.favoriteName.setText(user.getNamePretty());
+                holder.binding.favoriteFirst.setText("User");
+                holder.binding.favoriteSecond.setText(user.getNamePretty());
                 break;
         }
         realm.close();
-        holder.binding.favoriteType.setText(favorite.getType().name());
+        holder.binding.favoriteRemove.setOnClickListener(v -> {
+            // not sure if `position` is the same if we removed another before this item
+            int index = favorites.indexOf(favorite);
+            favorites.remove(index);
+            notifyItemRemoved(index);
+            onClickSubjectRemoved.onNext(favorite);
+        });
         holder.itemView.setOnClickListener(v -> onClickSubject.onNext(favorite));
     }
 
@@ -62,7 +75,11 @@ class FavoriteAdapter extends RecyclerView.Adapter<FavoriteViewHolder> {
         return favorites.size();
     }
 
-    public Observable<Favorite> getClicked(){
+    public Observable<Favorite> getClicked() {
         return onClickSubject;
+    }
+
+    public Observable<Favorite> getRemoved() {
+        return onClickSubjectRemoved;
     }
 }
