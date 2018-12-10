@@ -42,11 +42,10 @@ class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull RecordViewHolder holder, int position) {
         Record record = records.get(position);
-        holder.binding.recordComment.setText(record.getRun().getComment());
-
         Realm realm = Realm.getDefaultInstance();
         List<String> playerIDs = record.getRun().getPlayersIDs();
         List<String> usersPretty = new ArrayList<>(playerIDs.size());
+        holder.binding.recordOwner.setText("");
         for (String userID : playerIDs)
             User.getOrFetch(realm, userID)
                     .subscribeOn(Schedulers.io())

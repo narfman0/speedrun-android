@@ -38,6 +38,10 @@ public class RecentRunsListAdapter extends RecyclerView.Adapter<RunViewHolder> {
     public void onBindViewHolder(RunViewHolder holder, int position) {
         Run run = runs.get(position);
         Realm realm = Realm.getDefaultInstance();
+        holder.binding.runGame.setText("");
+        holder.binding.runUser.setText("");
+        holder.binding.runPlatform.setText("");
+        holder.binding.runCategory.setText("");
         try {
             Game.getOrFetch(realm, run.getGame())
                     .observeOn(AndroidSchedulers.mainThread())

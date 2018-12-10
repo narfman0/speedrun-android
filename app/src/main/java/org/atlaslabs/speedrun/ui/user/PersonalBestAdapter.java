@@ -45,12 +45,14 @@ class PersonalBestAdapter extends RecyclerView.Adapter<PersonalBestViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull PersonalBestViewHolder holder, int position) {
         Record record = records.get(position);
+        holder.binding.recordGame.setText("");
         disposable.add(Game.getOrFetch(realm, record.getRun().getGame())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(g -> {
                     holder.binding.recordGame.setText(g.getNames().getInternational());
                 }, e -> Log.w(TAG, "Error getting pb game: " + e)));
+        holder.binding.recordCategory.setText("");
         disposable.add(Category.getOrFetch(realm, record.getRun().getCategory())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
